@@ -1,0 +1,14 @@
+-- #Primary Keys OK
+
+ALTER TABLE Usuarios ADD CONSTRAINT PK_Usuarios PRIMARY KEY (id);
+ALTER TABLE UsuariosFrecuentes ADD CONSTRAINT PK_UsuariosFrecuentes PRIMARY KEY (id);
+ALTER TABLE UsuariosFrecuentes_Beneficios ADD CONSTRAINT PK_UsuariosFrecuentes_Beneficios PRIMARY KEY (beneficio, usuarioFrecuente);
+ALTER TABLE UsuariosInvitados ADD CONSTRAINT PK_UsuariosInvitados PRIMARY KEY (id);
+ALTER TABLE Beneficios ADD CONSTRAINT PK_Beneficios PRIMARY KEY (id);
+ALTER TABLE Empleados ADD CONSTRAINT PK_Empleados PRIMARY KEY (id);
+ALTER TABLE Cajeros ADD CONSTRAINT PK_Cajeros PRIMARY KEY (id);
+ALTER TABLE Dealers ADD CONSTRAINT PK_Dealers PRIMARY KEY (id);
+ALTER TABLE Fichas ADD CONSTRAINT PK_Fichas PRIMARY KEY (id);
+ALTER TABLE Juegos ADD CONSTRAINT PK_Juegos PRIMARY KEY (id);
+ALTER TABLE Mesas ADD CONSTRAINT PK_Mesas PRIMARY KEY (id);
+ALTER TABLE Apuestas ADD CONSTRAINT PK_Apuestas PRIMARY KEY (id);
