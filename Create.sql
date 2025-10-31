@@ -1,7 +1,8 @@
 --#1CREAR TABLAS OK
+
 CREATE TABLE Usuarios (
     id NUMBER NOT NULL,
-    nombre VARCHAR2(50) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
     balance NUMBER NOT NULL
 );
 
@@ -19,8 +20,8 @@ CREATE TABLE UsuariosInvitados (
 
 CREATE TABLE Beneficios (
     id NUMBER NOT NULL,
-    requisito VARCHAR2(100) NOT NULL,
-    descripcion VARCHAR2(100) NOT NULL
+    requisito VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE UsuariosFrecuentes_Beneficios (
@@ -30,19 +31,19 @@ CREATE TABLE UsuariosFrecuentes_Beneficios (
 
 CREATE TABLE Empleados (
     id NUMBER NOT NULL,
-    nombre VARCHAR2(50) NOT NULL,
-    turno VARCHAR2(20) NOT NULL
+    nombre VARCHAR(50) NOT NULL,
+    turno VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Cajeros (
     id NUMBER NOT NULL,
-    nivelAcceso VARCHAR2(20) NOT NULL,
+    nivelAcceso VARCHAR(20) NOT NULL,
     ventanilla NUMBER(2) NOT NULL
 );
 
 CREATE TABLE Dealers (
     id NUMBER NOT NULL,
-    especialidad VARCHAR2(20) 
+    especialidad VARCHAR(20) 
 );
 
 CREATE TABLE Fichas (
@@ -55,7 +56,7 @@ CREATE TABLE Fichas (
 
 CREATE TABLE Juegos (
     id NUMBER NOT NULL,
-    nombre VARCHAR2(50) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
     maxJugadores NUMBER NOT NULL,
     minApuesta NUMBER NOT NULL,
     maxApuesta NUMBER NOT NULL
@@ -64,7 +65,7 @@ CREATE TABLE Juegos (
 CREATE TABLE Mesas (
     id NUMBER,
     numeroMesa NUMBER,
-    estado VARCHAR2(20),
+    estado VARCHAR(20),
     juego NUMBER NOT NULL,
     dealer NUMBER NOT NULL
 );
@@ -73,7 +74,7 @@ CREATE TABLE Apuestas (
     id NUMBER NOT NULL,
     monto NUMBER NOT NULL,
     fechaHora DATE NOT NULL,
-    estado VARCHAR2(20) NOT NULL,
+    estado VARCHAR(20) NOT NULL,
     usuario NUMBER NOT NULL,
     mesa NUMBER NOT NULL
 );

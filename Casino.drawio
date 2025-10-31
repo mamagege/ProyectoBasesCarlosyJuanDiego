@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 OPR/122.0.0.0" version="28.2.7">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" version="28.2.8">
   <diagram name="Página-1" id="5_6-cdGAgUpBXqRRjG8W">
-    <mxGraphModel dx="1270" dy="877" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2253" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -52,13 +52,13 @@
             <mxPoint x="640" y="760" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="nQVoCbJ3HEToNgZ09ShH-21" value="Juegos(&lt;u&gt;id&lt;/u&gt;, nombre, maxJugadores, minApuesta, maxApuesta)" style="text;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#36393d;" parent="1" vertex="1">
-          <mxGeometry x="140" y="880" width="370" height="30" as="geometry" />
+        <mxCell id="nQVoCbJ3HEToNgZ09ShH-21" value="Juegos(&lt;u&gt;id&lt;/u&gt;, nombre, tipoJuego, maxJugadores, minApuesta, maxApuesta)" style="text;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="140" y="880" width="430" height="30" as="geometry" />
         </mxCell>
         <mxCell id="nQVoCbJ3HEToNgZ09ShH-22" value="Mesas(&lt;u&gt;id,&lt;/u&gt; numeroMesa, estado, juego, dealer)" style="text;whiteSpace=wrap;html=1;fillColor=#ffcc99;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="160" y="765" width="270" height="25" as="geometry" />
         </mxCell>
-        <mxCell id="nQVoCbJ3HEToNgZ09ShH-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.132;entryY=0.033;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.706;exitY=1.04;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="nQVoCbJ3HEToNgZ09ShH-22" target="nQVoCbJ3HEToNgZ09ShH-21" edge="1">
+        <mxCell id="nQVoCbJ3HEToNgZ09ShH-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.109;entryY=-0.067;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.706;exitY=1.04;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="nQVoCbJ3HEToNgZ09ShH-22" target="nQVoCbJ3HEToNgZ09ShH-21" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="nQVoCbJ3HEToNgZ09ShH-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.306;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.856;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="nQVoCbJ3HEToNgZ09ShH-22" target="nQVoCbJ3HEToNgZ09ShH-16" edge="1">
