@@ -23,8 +23,3 @@ CHECK (turno IN ('Manana','Tarde','Noche'));
 
 
 
-
-
-
-
-

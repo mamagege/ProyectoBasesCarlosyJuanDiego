@@ -69,8 +69,8 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20004, 'Un usuario frecuente no puede ser registrado como invitado.');
     END IF;
 END;
-/
 
+/
 
 --Registro: Al completar 10 visitas, el usuario invitado se convierte en usuario frecuente.
 
@@ -90,13 +90,13 @@ BEGIN
 
         IF v_existente = 0 THEN
             INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos)
-            VALUES (:NEW.id, 'auto_promocion_' || :NEW.id || '@casino.com', '3000000000', 0);
+            VALUES (:NEW.id, NULL, NULL, 0);
         END IF;
     END IF;
 END;
+
 /
-
-
+--poner comentario correo y celular
 --Registro: Un usuario invitado no puede recibir Beneficios
 
 --------------------------------------------------------------------------------

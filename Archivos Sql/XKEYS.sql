@@ -14,6 +14,7 @@ ALTER TABLE UsuariosFrecuentes DROP CONSTRAINT ck_Tcorreo;
 -- --- TABLA: UsuariosInvitados
 ALTER TABLE UsuariosInvitados DROP CONSTRAINT FK_UsuariosInvitados_Usuario;
 ALTER TABLE UsuariosInvitados DROP CONSTRAINT PK_UsuariosInvitados;
+ALTER TABLE UsuariosInvitados DROP CONSTRAINT ck_Nvisitas;
 
 -- --- TABLA: Beneficios
 ALTER TABLE Beneficios DROP CONSTRAINT PK_Beneficios;
@@ -60,7 +61,3 @@ ALTER TABLE Apuestas DROP CONSTRAINT ck_TestadoApuesta;
 
 -- --- TABLA: Usuarios
 ALTER TABLE Usuarios DROP CONSTRAINT PK_Usuarios;
-
---------------------------------------------------------------------------------
--- 2. ELIMINAR TABLAS (ORDEN SEGURO: HIJAS → PADRES)
---------------------------------------------------------------------------------

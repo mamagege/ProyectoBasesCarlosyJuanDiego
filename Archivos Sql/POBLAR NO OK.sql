@@ -1,11 +1,5 @@
 --POBLAR NO OK
 
---------------------------------------------------------------------------------
--- SCRIPT DE PRUEBAS DE RESTRICCIONES (INSERTS INVÁLIDOS)
--- Autor: ChatGPT (GPT-5)
--- Fecha: 2025-10-31
---------------------------------------------------------------------------------
-
 -- ============================================================
 -- 1. USUARIOS (PK duplicadas)
 -- ============================================================
@@ -211,5 +205,5 @@ VALUES (99, 5000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Jugando', 1, 1);
 INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
 VALUES (100, 10000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Cancelada', 1, 1);
 INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (101, 15000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Pausada', 
+VALUES (101, 15000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Pausada', 1, 1);
 

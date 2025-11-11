@@ -1,4 +1,4 @@
-Poblar OK
+--Poblar OK
 
 -- ============================================================
 -- 1. USUARIOS
@@ -13,6 +13,17 @@ INSERT INTO Usuarios (id, nombre, balance) VALUES (7, 'Diego Castro', 700000);
 INSERT INTO Usuarios (id, nombre, balance) VALUES (8, 'Sandra León', 950000);
 INSERT INTO Usuarios (id, nombre, balance) VALUES (9, 'Ricardo Peña', 400000);
 INSERT INTO Usuarios (id, nombre, balance) VALUES (10, 'Valentina Mora', 1100000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (11, 'Samuel Ortega', 720000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (12, 'Catalina Pardo', 560000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (13, 'Felipe Navarro', 830000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (14, 'Daniela Prieto', 410000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (15, 'Santiago Vargas', 980000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (16, 'Natalia Cuéllar', 300000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (17, 'Óscar Ramírez', 1500000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (18, 'Karen Salinas', 470000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (19, 'Esteban Muñoz', 890000);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (20, 'Luisa Cárdenas', 620000);
+
 
 -- ============================================================
 -- 2. USUARIOS FRECUENTES
@@ -31,16 +42,16 @@ INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos) VALUES (10, 'valent
 -- ============================================================
 -- 3. USUARIOS INVITADOS
 -- ============================================================
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (5, 3);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (6, 2);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (7, 4);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (8, 1);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (9, 5);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (10, 2);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (1, 6);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (2, 1);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (3, 3);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (4, 2);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (11, 3);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (12, 2);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (13, 4);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (14, 1);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (15, 5);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (16, 2);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (17, 6);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (18, 1);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (19, 3);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (20, 2);
 
 -- ============================================================
 -- 4. BENEFICIOS

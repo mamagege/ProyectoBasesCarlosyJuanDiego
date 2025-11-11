@@ -8,8 +8,8 @@ CREATE TABLE Usuarios (
 
 CREATE TABLE UsuariosFrecuentes (
     id NUMBER(10) NOT NULL,
-    correo VARCHAR2(100) NOT NULL,
-    celular VARCHAR2(15) NOT NULL,
+    correo VARCHAR2(100),
+    celular VARCHAR2(15),
     puntos NUMBER(10) NOT NULL
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE Dealers (
     especialidad VARCHAR2(20) 
 );
 
-CREATE TABLE Fichas (
+CREATE TABLE CambioFichas (
     id NUMBER(10) NOT NULL,
     monto NUMBER(20) NOT NULL,
     fechaHora DATE NOT NULL,

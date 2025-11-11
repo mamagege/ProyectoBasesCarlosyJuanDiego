@@ -44,7 +44,7 @@ UPDATE Apuestas SET estado = 'Ganada' WHERE id = 106;
 -- Los montos con 'Fichas' suman al balance.
 
 INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (200, 10000, SYSDATE, 1, 1, 'Dinero');
+VALUES (212, 100000, SYSDATE, 1, 1, 'Fichas');
 
 INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (201, 5000, SYSDATE, 2, 2, 'Fichas');
@@ -78,29 +78,28 @@ VALUES (209, 50000, SYSDATE, 10, 10, 'Dinero');
 --------------------------------------------------------------------------------
 -- 3. PRUEBA TRIGGER: trg_evitar_frecuente_a_invitado
 --------------------------------------------------------------------------------
--- Estos usuarios (id > 10) no existen como frecuentes, por lo tanto el insert es válido.
+-- Estos usuarios no existen como frecuentes, por lo tanto el insert es válido.
 
-INSERT INTO Usuarios (id, nombre, balance) VALUES (11, 'Nuevo Invitado 1', 300000);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (11, 1);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (30, 'Nuevo Invitado 1', 300000);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (30, 1);
 
-INSERT INTO Usuarios (id, nombre, balance) VALUES (12, 'Nuevo Invitado 2', 250000);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (12, 2);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (31, 'Nuevo Invitado 2', 250000);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (31, 2);
 
-INSERT INTO Usuarios (id, nombre, balance) VALUES (13, 'Nuevo Invitado 3', 400000);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (13, 5);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (32, 'Nuevo Invitado 3', 400000);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (32, 5);
 
-INSERT INTO Usuarios (id, nombre, balance) VALUES (14, 'Nuevo Invitado 4', 500000);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (14, 9);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (33, 'Nuevo Invitado 4', 500000);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (33, 9);
 
-INSERT INTO Usuarios (id, nombre, balance) VALUES (15, 'Nuevo Invitado 5', 150000);
-INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (15, 3);
+INSERT INTO Usuarios (id, nombre, balance) VALUES (34, 'Nuevo Invitado 5', 150000);
+INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (34, 3);
 
 --Disparador: Al completar 10 visitas, el usuario invitado se convierte en usuario frecuente.
 
 --------------------------------------------------------------------------------
 -- 4. PRUEBA TRIGGER: trg_promover_a_frecuente
 --------------------------------------------------------------------------------
--- Subir el número de visitas a 10 activa la promoción automática
 UPDATE UsuariosInvitados SET numeroDeVisitas = 10 WHERE id = 11;
 UPDATE UsuariosInvitados SET numeroDeVisitas = 10 WHERE id = 12;
 UPDATE UsuariosInvitados SET numeroDeVisitas = 10 WHERE id = 13;
@@ -108,8 +107,6 @@ UPDATE UsuariosInvitados SET numeroDeVisitas = 10 WHERE id = 14;
 UPDATE UsuariosInvitados SET numeroDeVisitas = 10 WHERE id = 15;
 
 -- Ahora estos nuevos usuarios deberían aparecer en UsuariosFrecuentes
-SELECT * FROM UsuariosFrecuentes WHERE id BETWEEN 11 AND 15;
-
 
 --Diaparador: Un usuario invitado no puede recibir Beneficios
 
@@ -118,16 +115,8 @@ SELECT * FROM UsuariosFrecuentes WHERE id BETWEEN 11 AND 15;
 -- 5. PRUEBA TRIGGER: trg_evitar_beneficios_invitados
 --------------------------------------------------------------------------------
 -- Estos usuarios (1–10) sí son frecuentes → permitido
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (1, 1);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (2, 2);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (3, 3);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (4, 4);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (5, 5);
-
--- Usuarios 11–15 recién promovidos (ya son frecuentes) → también válidos
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (6, 11);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (7, 12);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (8, 13);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (9, 14);
-INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (10, 15);
-
+INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (1, 2);
+INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (2, 3);
+INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (3, 4);
+INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (4, 5);
+INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (5, 6);
