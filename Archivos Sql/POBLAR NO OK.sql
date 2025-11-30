@@ -174,27 +174,27 @@ INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (107, 992, 'Abi
 INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (108, 991, 'Cerrada', 1, NULL);
 
 -- ============================================================
--- 11. FICHAS (CHECK cajaRecibe y FK)
+-- 11. CambioFichas (CHECK cajaRecibe y FK)
 -- ============================================================
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (99, 10000, TO_DATE('2025-10-30','YYYY-MM-DD'), 99, 1, 'Dinero'); -- FK usuario no existe
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (100, 20000, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, 99, 'Fichas'); -- FK cajero no existe
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (101, 30000, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, 1, 'Tarjeta'); -- CHECK cajaRecibe inválido
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (102, 40000, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, 1, 'Efectivo');
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (103, 50000, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, 1, 'Nada');
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (104, NULL, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, 1, 'Dinero');
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (105, 70000, NULL, 1, 1, 'Fichas');
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (106, 80000, TO_DATE('2025-10-30','YYYY-MM-DD'), NULL, 1, 'Dinero');
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (107, 90000, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, NULL, 'Fichas');
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (108, 100000, TO_DATE('2025-10-30','YYYY-MM-DD'), 1, 1, NULL);
 
 -- ============================================================

@@ -24,26 +24,26 @@ VALUES (302, 7000, SYSDATE, 'Perdida', 3, 3);
 UPDATE Apuestas SET estado = 'En proceso' WHERE id = 302; -- DEBERÍA FALLAR
 
 
---Disparador: Al registrar fichas, Si cajaRecibe es igual a dinero, el monto del cambio se resta al balance del usuario si no, el monto se suma al balance.
+--Disparador: Al registrar CambioFichas, Si cajaRecibe es igual a dinero, el monto del cambio se resta al balance del usuario si no, el monto se suma al balance.
 
 --------------------------------------------------------------------------------
 -- 2. PRUEBA NEGATIVA: trg_actualizar_balance_fichas
 --------------------------------------------------------------------------------
 
 --  Valor no permitido en cajaRecibe
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (310, 10000, SYSDATE, 1, 1, 'Tarjeta'); -- DEBERÍA FALLAR
 
 --  Valor nulo en cajaRecibe
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (311, 5000, SYSDATE, 2, 2, NULL); -- DEBERÍA FALLAR
 
 --  FK inválida (usuario inexistente)
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (312, 5000, SYSDATE, 999, 1, 'Dinero'); -- DEBERÍA FALLAR
 
 --  FK inválida (cajero inexistente)
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (313, 5000, SYSDATE, 1, 999, 'Fichas'); -- DEBERÍA FALLAR
 
 

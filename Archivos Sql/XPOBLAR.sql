@@ -3,8 +3,8 @@
 -- 1. Apuestas depende de Mesas y Usuarios
 DELETE FROM Apuestas;
 
--- 2. Fichas depende de Cajeros y Usuarios
-DELETE FROM Fichas;
+-- 2. CambioFichas depende de Cajeros y Usuarios
+DELETE FROM CambioFichas;
 
 -- 3. Mesas depende de Juegos y Dealers
 DELETE FROM Mesas;

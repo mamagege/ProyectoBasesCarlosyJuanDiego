@@ -37,11 +37,11 @@ ALTER TABLE Dealers DROP CONSTRAINT FK_Dealers_Empleado;
 ALTER TABLE Dealers DROP CONSTRAINT PK_Dealers;
 ALTER TABLE Dealers DROP CONSTRAINT ck_Tespecialidad;
 
--- --- TABLA: Fichas
-ALTER TABLE Fichas DROP CONSTRAINT FK_Fichas_Usuario;
-ALTER TABLE Fichas DROP CONSTRAINT FK_Fichas_Cajero;
-ALTER TABLE Fichas DROP CONSTRAINT PK_Fichas;
-ALTER TABLE Fichas DROP CONSTRAINT ck_Trecibe;
+-- --- TABLA: CambioFichas
+ALTER TABLE CambioFichas DROP CONSTRAINT FK_CambioFichas_Usuario;
+ALTER TABLE CambioFichas DROP CONSTRAINT FK_CambioFichas_Cajero;
+ALTER TABLE CambioFichas DROP CONSTRAINT PK_CambioFichas;
+ALTER TABLE CambioFichas DROP CONSTRAINT ck_Trecibe;
 
 -- --- TABLA: Juegos
 ALTER TABLE Juegos DROP CONSTRAINT PK_Juegos;

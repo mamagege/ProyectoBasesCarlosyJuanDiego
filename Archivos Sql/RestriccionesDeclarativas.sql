@@ -12,7 +12,7 @@ CHECK (estado IN ('En proceso','Perdida','Ganada'));
 ALTER TABLE MESAS ADD CONSTRAINT ck_TestadoMesa
 CHECK (estado IN ('Abierta','Cerrada','En mantenimiento'));
 
-ALTER TABLE FICHAS ADD CONSTRAINT ck_Trecibe
+ALTER TABLE CambioFichas ADD CONSTRAINT ck_Trecibe
 CHECK (cajaRecibe IN ('Dinero','Fichas'));
 
 ALTER TABLE EMPLEADOS ADD CONSTRAINT ck_Tturno

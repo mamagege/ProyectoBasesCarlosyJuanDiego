@@ -43,34 +43,34 @@ UPDATE Apuestas SET estado = 'Ganada' WHERE id = 106;
 -- Los montos con 'Dinero' restan al balance del usuario.
 -- Los montos con 'Fichas' suman al balance.
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (212, 100000, SYSDATE, 1, 1, 'Fichas');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (201, 5000, SYSDATE, 2, 2, 'Fichas');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (202, 30000, SYSDATE, 3, 3, 'Dinero');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (203, 40000, SYSDATE, 4, 4, 'Fichas');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (204, 15000, SYSDATE, 5, 5, 'Dinero');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (205, 8000, SYSDATE, 6, 6, 'Fichas');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (206, 25000, SYSDATE, 7, 7, 'Dinero');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (207, 10000, SYSDATE, 8, 8, 'Fichas');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (208, 20000, SYSDATE, 9, 9, 'Fichas');
 
-INSERT INTO Fichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
+INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
 VALUES (209, 50000, SYSDATE, 10, 10, 'Dinero');
 
 --Disparador: Un usuario no puede pasar de Usuario frecuente a Usuario invitado

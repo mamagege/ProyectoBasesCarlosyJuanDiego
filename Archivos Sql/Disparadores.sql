@@ -24,13 +24,13 @@ END;
 
 --Función: Registrar transacciones de fichas y dinero
 
---Registro: Al registrar fichas, Si cajaRecibe es igual a dinero, el monto del cambio se resta al balance del usuario si no, el monto se suma al balance.
+--Registro: Al registrar CambioFichas, Si cajaRecibe es igual a dinero, el monto del cambio se resta al balance del usuario si no, el monto se suma al balance.
 
 --------------------------------------------------------------------------------
 -- TRIGGER: Actualización automática de balance según transacción de fichas
 --------------------------------------------------------------------------------
 CREATE OR REPLACE TRIGGER trg_actualizar_balance_fichas
-AFTER INSERT ON Fichas
+AFTER INSERT ON CambioFichas
 FOR EACH ROW
 BEGIN
     IF :NEW.cajaRecibe = 'Dinero' THEN

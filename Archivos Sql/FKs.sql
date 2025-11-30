@@ -11,10 +11,10 @@ FOREIGN KEY (empleado) REFERENCES Empleados(id);
 ALTER TABLE Dealers ADD CONSTRAINT FK_Dealers_Empleado
 FOREIGN KEY (empleado) REFERENCES Empleados(id);
 
-ALTER TABLE Fichas ADD CONSTRAINT FK_Fichas_Usuario
+ALTER TABLE CambioFichas ADD CONSTRAINT FK_CambioFichas_Usuario
 FOREIGN KEY (usuario) REFERENCES Usuarios(id);
 
-ALTER TABLE Fichas ADD CONSTRAINT FK_Fichas_Cajero
+ALTER TABLE CambioFichas ADD CONSTRAINT FK_CambioFichas_Cajero
 FOREIGN KEY (cajero) REFERENCES Cajeros(id);
 
 ALTER TABLE Mesas ADD CONSTRAINT FK_Mesas_Juego

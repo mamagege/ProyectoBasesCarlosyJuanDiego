@@ -31,10 +31,10 @@ GROUP BY Usuarios.nombre, UsuariosFrecuentes.id
 
 --Por cantidad de cambio de fichas
 
-SELECT UsuariosFrecuentes.id, Usuarios.nombre, Fichas.monto FROM UsuariosFrecuentes
-JOIN FICHAS on UsuariosFrecuentes.id = fichas.id 
+SELECT UsuariosFrecuentes.id, Usuarios.nombre, CambioFichas.monto FROM UsuariosFrecuentes
+JOIN CambioFichas on UsuariosFrecuentes.id = CambioFichas.id 
 JOIN USUARIOS on UsuariosFrecuentes.id = Usuarios.id
-ORDER BY Fichas.monto DESC
+ORDER BY CambioFichas.monto DESC
 
 --¿Cuales son los dealers que generan mas ingresos para el casino?
 
