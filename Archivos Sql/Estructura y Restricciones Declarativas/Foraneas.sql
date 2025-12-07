@@ -1,15 +1,19 @@
 -- #Foreing Key OK
 ALTER TABLE UsuariosFrecuentes ADD CONSTRAINT FK_UsuariosFrecuentes_Usuario
-FOREIGN KEY (id) REFERENCES Usuarios(id);
+FOREIGN KEY (id) REFERENCES Usuarios(id)
+ON DELETE CASCADE;
 
 ALTER TABLE UsuariosInvitados ADD CONSTRAINT FK_UsuariosInvitados_Usuario
-FOREIGN KEY (id) REFERENCES Usuarios(id);
+FOREIGN KEY (id) REFERENCES Usuarios(id)
+ON DELETE CASCADE;
 
 ALTER TABLE Cajeros ADD CONSTRAINT FK_Cajeros_Empleado
-FOREIGN KEY (id) REFERENCES Empleados(id);
+FOREIGN KEY (id) REFERENCES Empleados(id)
+ON DELETE CASCADE;
 
 ALTER TABLE Dealers ADD CONSTRAINT FK_Dealers_Empleado
-FOREIGN KEY (id) REFERENCES Empleados(id);
+FOREIGN KEY (id) REFERENCES Empleados(id)
+ON DELETE CASCADE;
 
 ALTER TABLE CambioFichas ADD CONSTRAINT FK_CambioFichas_Usuario
 FOREIGN KEY (usuario) REFERENCES Usuarios(id);
@@ -21,7 +25,8 @@ ALTER TABLE Mesas ADD CONSTRAINT FK_Mesas_Juego
 FOREIGN KEY (juego) REFERENCES Juegos(id);
 
 ALTER TABLE Mesas ADD CONSTRAINT FK_Mesas_Dealer
-FOREIGN KEY (dealer) REFERENCES Dealers(id);
+FOREIGN KEY (dealer) REFERENCES Dealers(id)
+ON DELETE SET NULL;
 
 ALTER TABLE Apuestas ADD CONSTRAINT FK_Apuestas_Usuario
 FOREIGN KEY (usuario) REFERENCES Usuarios(id);

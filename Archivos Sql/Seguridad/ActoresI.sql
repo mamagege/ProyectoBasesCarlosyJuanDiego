@@ -182,6 +182,12 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
         RETURN v_balance;
     END consultar_saldo_usuario;
 
+    -- Registrar la visita de un usuario invitado
+    PROCEDURE registrar_visita_usuario(p_usuario_id IN Usuarios.id%TYPE) AS
+    BEGIN
+        PCK_MANTENIMIENTO.registrar_visita(p_usuario_id);
+    END registrar_visita_usuario;
+
 END PCK_CAJERO;
 /
 
@@ -220,11 +226,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_DEALER AS
         PCK_MANTENIMIENTO.actualizar_mesa_estado(p_id, p_nuevo_estado);
     END actualizar_estado_mesa;
 
-    -- Registrar la visita de un usuario invitado
-    PROCEDURE registrar_visita_usuario(p_usuario_id IN Usuarios.id%TYPE) AS
-    BEGIN
-        PCK_USUARIOS_FUNC.registrar_visita(p_usuario_id);
-    END registrar_visita_usuario;
+    
     
 END PCK_DEALER;
 /

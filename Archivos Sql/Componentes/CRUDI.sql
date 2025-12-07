@@ -173,6 +173,44 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
         WHEN OTHERS THEN
             RAISE;
     END crear_usuario_invitado;
+
+
+    PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE) AS
+        v_es_invitado BOOLEAN := FALSE;
+        v_visitas UsuariosInvitados.numeroDeVisitas%TYPE;
+    BEGIN
+        -- 1. Verificar si el usuario es un invitado
+        SELECT numeroDeVisitas INTO v_visitas
+        FROM UsuariosInvitados
+        WHERE id = p_usuario_id;
+        
+        v_es_invitado := TRUE;
+        
+        -- 2. Actualizar el contador de visitas (el trigger trg_promover_a_frecuente se encargará de la promoción)
+        UPDATE UsuariosInvitados
+        SET numeroDeVisitas = numeroDeVisitas + 1
+        WHERE id = p_usuario_id;
+        
+        COMMIT;
+        
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            -- Si no está en UsuariosInvitados, es un Frecuente o no existe
+            BEGIN
+                SELECT 'X' INTO v_visitas FROM UsuariosFrecuentes WHERE id = p_usuario_id;
+                
+                -- Si existe en Frecuentes, lanza el error de negocio
+                RAISE_APPLICATION_ERROR(-20105, 'Error 20105: No se puede registrar visita al usuario ' || p_usuario_id || '. Solo aplica a invitados.');
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    -- Si no existe en ninguna, lanza el error de inexistencia
+                    RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_usuario_id || ' no existe.');
+                WHEN OTHERS THEN
+                    RAISE;
+            END;
+        WHEN OTHERS THEN
+            RAISE;
+    END registrar_visita;
     
     -- -------------------------
     -- 2.9 BENEFICIOS (CREATE)
@@ -532,42 +570,7 @@ END PCK_TRANSACCIONES;
 -- ==========================================================
 CREATE OR REPLACE PACKAGE BODY PCK_USUARIOS_FUNC AS
 
-    PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE) AS
-        v_es_invitado BOOLEAN := FALSE;
-        v_visitas UsuariosInvitados.numeroDeVisitas%TYPE;
-    BEGIN
-        -- 1. Verificar si el usuario es un invitado
-        SELECT numeroDeVisitas INTO v_visitas
-        FROM UsuariosInvitados
-        WHERE id = p_usuario_id;
-        
-        v_es_invitado := TRUE;
-        
-        -- 2. Actualizar el contador de visitas (el trigger trg_promover_a_frecuente se encargará de la promoción)
-        UPDATE UsuariosInvitados
-        SET numeroDeVisitas = numeroDeVisitas + 1
-        WHERE id = p_usuario_id;
-        
-        COMMIT;
-        
-    EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            -- Si no está en UsuariosInvitados, es un Frecuente o no existe
-            BEGIN
-                SELECT 'X' INTO v_visitas FROM UsuariosFrecuentes WHERE id = p_usuario_id;
-                
-                -- Si existe en Frecuentes, lanza el error de negocio
-                RAISE_APPLICATION_ERROR(-20105, 'Error 20105: No se puede registrar visita al usuario ' || p_usuario_id || '. Solo aplica a invitados.');
-            EXCEPTION
-                WHEN NO_DATA_FOUND THEN
-                    -- Si no existe en ninguna, lanza el error de inexistencia
-                    RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_usuario_id || ' no existe.');
-                WHEN OTHERS THEN
-                    RAISE;
-            END;
-        WHEN OTHERS THEN
-            RAISE;
-    END registrar_visita;
+    
 
     FUNCTION consultar_saldo(p_usuario_id IN Usuarios.id%TYPE)
         RETURN Usuarios.balance%TYPE

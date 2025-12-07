@@ -99,6 +99,10 @@ CREATE OR REPLACE PACKAGE PCK_CAJERO AS
         p_nombre        IN Usuarios.nombre%TYPE
     );
 
+    -- Registrar la visita de un usuario invitado
+    PROCEDURE registrar_visita_usuario(p_usuario_id IN Usuarios.id%TYPE);
+    
+
     -- Registrar transacción de fichas (Compra/Venta)
     PROCEDURE registrar_cambio_fichas(
         p_id            IN CambioFichas.id%TYPE,
@@ -145,8 +149,7 @@ CREATE OR REPLACE PACKAGE PCK_DEALER AS
         p_nuevo_estado  IN Mesas.estado%TYPE
     );
 
-    -- Registrar la visita de un usuario invitado
-    PROCEDURE registrar_visita_usuario(p_usuario_id IN Usuarios.id%TYPE);
+    
     
 END PCK_DEALER;
 /

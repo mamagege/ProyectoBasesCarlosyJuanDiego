@@ -139,6 +139,9 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
         p_balance       IN Usuarios.balance%TYPE
     );
 
+    PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE);
+
+    
     -- -------------------------
     -- 2.8 USUARIOS (DELETE)
     -- -------------------------
@@ -157,6 +160,8 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
         p_beneficio_id  IN Beneficios.id%TYPE,
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
     );
+
+    
 
 END PCK_MANTENIMIENTO;
 /
@@ -230,8 +235,6 @@ END PCK_TRANSACCIONES;
 -- (No requiere cambios en la interfaz)
 -- ==========================================================
 CREATE OR REPLACE PACKAGE PCK_USUARIOS_FUNC AS
-
-    PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE);
 
     FUNCTION consultar_saldo(p_usuario_id IN Usuarios.id%TYPE)
         RETURN Usuarios.balance%TYPE;
