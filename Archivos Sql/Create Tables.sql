@@ -22,7 +22,10 @@ CREATE TABLE UsuariosInvitados (
 );
 
 CREATE TABLE Beneficios (
-    id NUMBER(10) NOT NULL,
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     requisito VARCHAR2(100) NOT NULL,
     descripcion VARCHAR2(100) NOT NULL
 );
@@ -33,7 +36,10 @@ CREATE TABLE UsuariosFrecuentes_Beneficios (
 );
 
 CREATE TABLE Empleados (
-    id NUMBER(10) NOT NULL,
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     nombre VARCHAR2(50) NOT NULL,
     turno VARCHAR2(10) NOT NULL
 );
@@ -50,7 +56,10 @@ CREATE TABLE Dealers (
 );
 
 CREATE TABLE CambioFichas (
-    id NUMBER(10) NOT NULL,
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     monto NUMBER(20) NOT NULL,
     fechaHora DATE NOT NULL,
     usuario NUMBER(10) NOT NULL,
@@ -59,7 +68,10 @@ CREATE TABLE CambioFichas (
 );
 
 CREATE TABLE Juegos (
-    id NUMBER(10) NOT NULL,
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     nombre VARCHAR2(50) NOT NULL,
     maxJugadores NUMBER(2) NOT NULL,
     minApuesta NUMBER(10) NOT NULL,
@@ -67,7 +79,10 @@ CREATE TABLE Juegos (
 );
 
 CREATE TABLE Mesas (
-    id NUMBER(10),
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     numeroMesa NUMBER(3),
     estado VARCHAR2(20),
     juego NUMBER(10) NOT NULL,
@@ -75,7 +90,10 @@ CREATE TABLE Mesas (
 );
 
 CREATE TABLE Apuestas (
-    id NUMBER(10) NOT NULL,
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     monto NUMBER(20) NOT NULL,
     fechaHora DATE NOT NULL,
     estado VARCHAR2(20) NOT NULL,
