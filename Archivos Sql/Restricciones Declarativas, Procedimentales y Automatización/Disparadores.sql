@@ -96,7 +96,7 @@ BEGIN
 END;
 
 /
---poner comentario correo y celular
+
 --Registro: Un usuario invitado no puede recibir Beneficios
 
 --------------------------------------------------------------------------------
