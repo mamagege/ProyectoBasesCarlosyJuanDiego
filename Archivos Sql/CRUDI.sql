@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------------
 CREATE OR REPLACE PACKAGE BODY PCK_PERSONAL AS
 
-    -- Función auxiliar (se mantiene para la gestión de errores)
+    -- Función auxiliar
     FUNCTION verificar_existencia (p_id IN NUMBER) RETURN BOOLEAN IS
         v_count NUMBER;
     BEGIN

@@ -205,4 +205,4 @@ VALUES (7, 25000, TO_DATE('2025-10-28 21:00', 'YYYY-MM-DD HH24:MI'), 'En proceso
 INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
 VALUES (8, 30000, TO_DATE('2025-10-28 21:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 8, 8);
 
-
+COMMIT;

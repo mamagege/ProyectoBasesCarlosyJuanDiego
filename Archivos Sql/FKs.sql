@@ -1,15 +1,15 @@
 -- #Foreing Key OK
 ALTER TABLE UsuariosFrecuentes ADD CONSTRAINT FK_UsuariosFrecuentes_Usuario
-FOREIGN KEY (usuario) REFERENCES Usuarios(id);
+FOREIGN KEY (id) REFERENCES Usuarios(id);
 
 ALTER TABLE UsuariosInvitados ADD CONSTRAINT FK_UsuariosInvitados_Usuario
-FOREIGN KEY (usuario) REFERENCES Usuarios(id);
+FOREIGN KEY (id) REFERENCES Usuarios(id);
 
 ALTER TABLE Cajeros ADD CONSTRAINT FK_Cajeros_Empleado
-FOREIGN KEY (empleado) REFERENCES Empleados(id);
+FOREIGN KEY (id) REFERENCES Empleados(id);
 
 ALTER TABLE Dealers ADD CONSTRAINT FK_Dealers_Empleado
-FOREIGN KEY (empleado) REFERENCES Empleados(id);
+FOREIGN KEY (id) REFERENCES Empleados(id);
 
 ALTER TABLE CambioFichas ADD CONSTRAINT FK_CambioFichas_Usuario
 FOREIGN KEY (usuario) REFERENCES Usuarios(id);

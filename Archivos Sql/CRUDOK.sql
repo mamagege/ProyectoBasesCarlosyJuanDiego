@@ -1,3 +1,5 @@
+SET SERVEROUTPUT ON;
+
 BEGIN
     DBMS_OUTPUT.PUT_LINE('--- 1. PCK_PERSONAL: Creación de Empleados (Dealer y Cajero) ---');
     
@@ -45,36 +47,36 @@ BEGIN
 
     -- 2.3 Crear Beneficio (ID 1)
     PCK_USUARIOS.crear_beneficio(
-        p_id => 1,
+        p_id => 11,
         p_requisito => '1000 puntos',
         p_descripcion => 'Bono de Cena Gratis'
     );
-    DBMS_OUTPUT.PUT_LINE('OK: Beneficio 1 creado.');
+    DBMS_OUTPUT.PUT_LINE('OK: Beneficio 11 creado.');
     
     -- 2.4 Asignar Beneficio a Frecuente
     PCK_USUARIOS.asignar_beneficio_a_frecuente(
-        p_beneficio_id => 1,
+        p_beneficio_id => 11,
         p_usuario_id => 201
     );
-    DBMS_OUTPUT.PUT_LINE('OK: Beneficio 1 asignado al usuario 201.');
+    DBMS_OUTPUT.PUT_LINE('OK: Beneficio 11 asignado al usuario 201.');
 
 
     DBMS_OUTPUT.PUT_LINE(CHR(10) || '--- 3. PCK_CASINO: Creación de Juegos, Mesas y Transacciones ---');
 
     -- 3.1 Crear Juego (ID 1)
     PCK_CASINO.crear_juego(
-        p_id => 1,
-        p_nombre => 'Blackjack',
-        p_maxJugadores => 7,
+        p_id => 11,
+        p_nombre => 'Dados',
+        p_maxJugadores => 5,
         p_minApuesta => 50,
         p_maxApuesta => 5000
     );
-    DBMS_OUTPUT.PUT_LINE('OK: Juego 1 (Blackjack) creado.');
+    DBMS_OUTPUT.PUT_LINE('OK: Juego 11 (Dados) creado.');
 
     -- 3.2 Crear Mesa (ID 50)
     PCK_CASINO.crear_mesa(
         p_id => 50,
-        p_juego_id => 1,
+        p_juego_id => 11,
         p_dealer_id => 100, -- Alan Turing
         p_estado => 'Abierta'
     );
@@ -109,16 +111,28 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(CHR(10) || '--- 4. VERIFICACIÓN: Consultas (Read) ---');
     
     DECLARE
-        v_nombre Empleados.nombre%TYPE;
         v_balance Usuarios.balance%TYPE;
+        v_juego_id Mesas.juego%TYPE;
+        v_dealer_id Mesas.dealer%TYPE;
+        v_estado Mesas.estado%TYPE;
+        v_dealer_nombre Empleados.nombre%TYPE; -- Variable auxiliar para el nombre
     BEGIN
         -- Verificar Balance de Usuario Frecuente 201
         SELECT balance INTO v_balance FROM Usuarios WHERE id = 201;
-        DBMS_OUTPUT.PUT_LINE('VERIFICADO: Nuevo Balance de Usuario 201 es: ' || v_balance || ' (Esperado: 5500, si el trigger funciona).');
+        DBMS_OUTPUT.PUT_LINE('VERIFICADO: Nuevo Balance de Usuario 201 es: ' || v_balance || ' (Esperado: 5500).');
 
         -- Consultar Mesa 50
-        PCK_CASINO.consultar_mesa(50, NULL, v_nombre, NULL); -- Reutilizando v_nombre
-        DBMS_OUTPUT.PUT_LINE('VERIFICADO: Mesa 50 está asignada al Dealer: ' || v_nombre);
+        PCK_CASINO.consultar_mesa(
+            p_id => 50, 
+            p_juego_id => v_juego_id, 
+            p_dealer_id => v_dealer_id, 
+            p_estado => v_estado
+        );
+        
+        -- Obtener el nombre del dealer a partir del ID devuelto por la consulta
+        SELECT nombre INTO v_dealer_nombre FROM Empleados WHERE id = v_dealer_id;
+
+        DBMS_OUTPUT.PUT_LINE('VERIFICADO: Mesa 50 está en estado: ' || v_estado || ' y asignada al Dealer: ' || v_dealer_nombre);
         
         COMMIT; -- Confirma todas las operaciones exitosas
     END;

@@ -1,8 +1,10 @@
+SET SERVEROUTPUT ON;
+
 BEGIN
     DBMS_OUTPUT.PUT_LINE('--- INICIO PRUEBAS DE ERROR (CRUDNoOK) ---');
     
     -- Bloque para aislar la prueba
-    SAVEPOINT TestStart; 
+    SAVEPOINT TestStart;
 
     -- =========================================================================
     -- PRUEBA 1: Error de Duplicidad (PCK_PERSONAL)
