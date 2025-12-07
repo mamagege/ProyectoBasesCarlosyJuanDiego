@@ -1,9 +1,12 @@
 --#1CREAR TABLAS OK
 
 CREATE TABLE Usuarios (
-    id NUMBER(10) NOT NULL,
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1 
+        INCREMENT BY 1,
     nombre VARCHAR2(50) NOT NULL,
-    balance NUMBER (20) NOT NULL
+    balance NUMBER(10, 2) NOT NULL
 );
 
 CREATE TABLE UsuariosFrecuentes (
