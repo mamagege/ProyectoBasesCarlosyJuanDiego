@@ -1,8 +1,8 @@
 SET SERVEROUTPUT ON;
 
 -- ==========================================================
--- 0. PROCEDIMIENTO AUXILIAR PARA IMPRIMIR CURSORES (PERMANENTE)
--- Se mantiene para la verificación de las consultas READ.
+-- 0. PROCEDIMIENTO AUXILIAR PARA IMPRIMIR CURSORES
+-- (Se mantiene para verificar consultas)
 -- ==========================================================
 CREATE OR REPLACE PROCEDURE print_refcursor_results (
     p_cursor IN SYS_REFCURSOR,
@@ -40,116 +40,130 @@ END;
 
 
 -- ==========================================================
--- 1. PROCEDIMIENTO DE PRUEBA POSITIVA DE SEGURIDAD (SeguridadOK)
--- Crea datos con IDs a partir de 2000.
+-- 1. PROCEDIMIENTO DE CREACIÓN DE DATOS PERMANENTES
 -- ==========================================================
 CREATE OR REPLACE PROCEDURE generar_datos_seguridad_ok AS
     v_cursor SYS_REFCURSOR;
     v_saldo  Usuarios.balance%TYPE;
+
+    -- Variables para capturar los IDs generados y usarlos como FKs
+    v_dealer_id             Empleados.id%TYPE;
+    v_cajero_id             Empleados.id%TYPE;
+    v_juego_id              Juegos.id%TYPE;
+    v_mesa_id               Mesas.id%TYPE;
+    v_usuario_frecuente_id  Usuarios.id%TYPE;
+    v_usuario_invitado_id   Usuarios.id%TYPE;
+    v_apuesta_id            Apuestas.id%TYPE;
+    v_transaccion_id        CambioFichas.id%TYPE;
+    
 BEGIN
     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
     DBMS_OUTPUT.PUT_LINE(' INICIO DE CREACIÓN DE DATOS PERMANENTES (SeguridadOK.sql) ');
     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
 
     -- ==========================================================
-    -- I. PCK_ADM_SISTEMA (Datos Iniciales de Mantenimiento)
+    -- I. DATOS CREADOS POR ROL_ADM_SISTEMA
     -- ==========================================================
     DBMS_OUTPUT.PUT_LINE(CHR(10) || 'I. DATOS CREADOS POR ROL_ADM_SISTEMA');
     
-    -- 1. Crear Empleado (Dealer 2000)
-    PCK_ADM_SISTEMA.crear_dealer(2000, 'Dealer Bruno D.', 'Noche', 'Ruleta');
-    DBMS_OUTPUT.PUT_LINE('-> OK: Dealer 2000 creado.');
+    -- 1. Crear Empleado (Dealer)
+    PCK_ADM_SISTEMA.crear_dealer('Dealer Bruno D.', 'Noche', 'Ruleta');
+    SELECT MAX(id) INTO v_dealer_id FROM Empleados; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Dealer creado con ID: ' || v_dealer_id);
 
-    -- 2. Crear Empleado (Cajero 2001)
-    PCK_ADM_SISTEMA.crear_cajero(2001, 'Cajero Sofía T.', 'Tarde', 'Nivel 1', 10);
-    DBMS_OUTPUT.PUT_LINE('-> OK: Cajero 2001 creado.');
+    -- 2. Crear Empleado (Cajero)
+    PCK_ADM_SISTEMA.crear_cajero('Cajero Sofía T.', 'Tarde', 'Nivel 1', 10);
+    SELECT MAX(id) INTO v_cajero_id FROM Empleados; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Cajero creado con ID: ' || v_cajero_id);
 
-    -- 3. Crear Juego 2000
-    PCK_ADM_SISTEMA.crear_juego(2000, 'Ruleta Francesa', 15, 100, 50000);
-    DBMS_OUTPUT.PUT_LINE('-> OK: Juego 2000 creado.');
+    -- 3. Crear Juego
+    PCK_ADM_SISTEMA.crear_juego('Ruleta Francesa', 15, 100, 50000);
+    SELECT MAX(id) INTO v_juego_id FROM Juegos; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Juego creado con ID: ' || v_juego_id);
     
-    -- 4. Crear Mesa 2000
-    PCK_ADM_SISTEMA.crear_mesa(2000, 301, 'Abierta', 2000, 2000);
-    DBMS_OUTPUT.PUT_LINE('-> OK: Mesa 2000 creada.');
+    -- 4. Crear Mesa, usando FKs (Dealer y Juego)
+    PCK_ADM_SISTEMA.crear_mesa(301, 'Abierta', v_juego_id, v_dealer_id);
+    SELECT MAX(id) INTO v_mesa_id FROM Mesas; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Mesa creada con ID: ' || v_mesa_id);
 
-    -- 5. Crear Usuario Frecuente 2000
-    PCK_ADM_SISTEMA.crear_usuario_frecuente(2000, 'Frecuente Javier', 50000, 'frec2000@test.com', '999-9999');
-    DBMS_OUTPUT.PUT_LINE('-> OK: Usuario Frecuente 2000 creado (Balance 50000).');
+    -- 5. Crear Usuario Frecuente
+    PCK_ADM_SISTEMA.crear_usuario_frecuente('Frecuente Javier', 50000, 'frec_javier@test.com', '999-9999');
+    SELECT MAX(id) INTO v_usuario_frecuente_id FROM Usuarios; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Usuario Frecuente creado con ID: ' || v_usuario_frecuente_id || ' (Balance 50000).');
     
-    -- 6. Consulta de Empleado (Verificación)
-    v_cursor := PCK_ADM_SISTEMA.consultar_empleado(2000);
-    print_refcursor_results(v_cursor, 'Consulta de Dealer 2000 (Verificación ADM)');
+    -- 6. Consulta de Empleado (Verificación de READ)
+    v_cursor := PCK_ADM_SISTEMA.consultar_empleado(v_dealer_id);
+    print_refcursor_results(v_cursor, 'Consulta de Dealer (Verificación ADM)');
 
 
     -- ==========================================================
-    -- II. PCK_CAJERO (Datos de Usuarios y Transacciones)
+    -- II. DATOS CREADOS POR ROL_CAJERO
     -- ==========================================================
     DBMS_OUTPUT.PUT_LINE(CHR(10) || 'II. DATOS CREADOS POR ROL_CAJERO');
     
-    -- 1. Crear Nuevo Invitado (ID 2002)
-    PCK_CAJERO.registrar_nuevo_invitado(2002, 'Invitado Marco');
-    DBMS_OUTPUT.PUT_LINE('-> OK: Usuario Invitado 2002 creado.');
+    -- 1. Crear Nuevo Invitado
+    PCK_CAJERO.registrar_nuevo_invitado('Invitado Marco');
+    SELECT MAX(id) INTO v_usuario_invitado_id FROM Usuarios; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Usuario Invitado creado con ID: ' || v_usuario_invitado_id);
 
     -- 2. Registrar Transacción de Fichas (Compra)
-    -- Usuario 2000 (Frecuente) compra 10,000 fichas.
+    -- Usuario Frecuente (v_usuario_frecuente_id) compra 10,000 fichas.
     PCK_CAJERO.registrar_cambio_fichas(
-        p_id => 2000, -- ID Transacción
         p_monto => 10000, 
-        p_usuario_id => 2000, 
+        p_usuario_id => v_usuario_frecuente_id, -- FK al Usuario
         p_cajaRecibe => 'Fichas',
-        p_cajero_id => 2001 -- Cajero que realiza la acción
+        p_cajero_id => v_cajero_id -- FK al Cajero
     );
-    DBMS_OUTPUT.PUT_LINE('-> OK: Transacción 2000 registrada. Balance de 2000 actualizado a 60000.');
+    SELECT MAX(id) INTO v_transaccion_id FROM CambioFichas; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Transacción registrada con ID: ' || v_transaccion_id || '. Balance actualizado a 60000.');
 
-    -- 3. Consulta de Saldo por Cajero (Verificación)
-    v_saldo := PCK_CAJERO.consultar_saldo_usuario(2000);
-    DBMS_OUTPUT.PUT_LINE('-> OK: Saldo de Usuario 2000 consultado por Cajero: ' || v_saldo);
+    -- 3. Consulta de Saldo por Cajero (Verificación de READ)
+    v_saldo := PCK_CAJERO.consultar_saldo_usuario(v_usuario_frecuente_id);
+    DBMS_OUTPUT.PUT_LINE('-> OK: Saldo de Usuario consultado por Cajero: ' || v_saldo);
 
     -- ==========================================================
-    -- III. PCK_DEALER (Datos de Operación)
+    -- III. DATOS CREADOS POR ROL_DEALER
     -- ==========================================================
     DBMS_OUTPUT.PUT_LINE(CHR(10) || 'III. DATOS CREADOS POR ROL_DEALER');
     
-    -- 1. Registrar Visita (Usuario 2002)
-    PCK_DEALER.registrar_visita_usuario(2002);
-    DBMS_OUTPUT.PUT_LINE('-> OK: Visita de Invitado 2002 registrada.');
+    -- 1. Registrar Visita (Usuario Invitado)
+    PCK_DEALER.registrar_visita_usuario(v_usuario_invitado_id);
+    DBMS_OUTPUT.PUT_LINE('-> OK: Visita de Invitado ' || v_usuario_invitado_id || ' registrada.');
     
-    -- 2. Registrar Apuesta (ID 2000)
+    -- 2. Registrar Apuesta
     PCK_DEALER.registrar_apuesta(
-        p_id => 2000, 
         p_monto => 5000, 
-        p_usuario_id => 2000, 
-        p_mesa_id => 2000
+        p_usuario_id => v_usuario_frecuente_id, 
+        p_mesa_id => v_mesa_id
     );
-    DBMS_OUTPUT.PUT_LINE('-> OK: Apuesta 2000 registrada.');
+    SELECT MAX(id) INTO v_apuesta_id FROM Apuestas; -- Captura el ID generado
+    DBMS_OUTPUT.PUT_LINE('-> OK: Apuesta registrada con ID: ' || v_apuesta_id);
     
     -- 3. Finalizar Apuesta
-    PCK_DEALER.finalizar_apuesta(
-        p_id => 2000, 
-        p_nuevo_estado => 'Perdida'
-    );
-    DBMS_OUTPUT.PUT_LINE('-> OK: Apuesta 2000 finalizada como "Perdida".');
+    PCK_DEALER.finalizar_apuesta(v_apuesta_id, 'Perdida');
+    DBMS_OUTPUT.PUT_LINE('-> OK: Apuesta ' || v_apuesta_id || ' finalizada como "Perdida".');
 
     -- 4. Actualizar estado de Mesa
-    PCK_DEALER.actualizar_estado_mesa(2000, 'Mantenimiento');
-    DBMS_OUTPUT.PUT_LINE('-> OK: Mesa 2000 actualizada a "Mantenimiento".');
+    PCK_DEALER.actualizar_estado_mesa(v_mesa_id, 'Mantenimiento');
+    DBMS_OUTPUT.PUT_LINE('-> OK: Mesa ' || v_mesa_id || ' actualizada a "Mantenimiento".');
 
     -- ==========================================================
-    -- IV. PCK_USUARIO (Consultas para Verificación de Auditoría)
+    -- IV. VERIFICACIÓN DE CONSULTAS (ROL_USUARIO_APLICACION)
     -- ==========================================================
     DBMS_OUTPUT.PUT_LINE(CHR(10) || 'IV. VERIFICACIÓN DE CONSULTAS (ROL_USUARIO_APLICACION)');
 
-    -- 1. Consultar Saldo Propio (Usuario 2000)
-    v_saldo := PCK_USUARIO.consultar_mi_saldo(2000);
-    DBMS_OUTPUT.PUT_LINE('-> OK: Saldo de Usuario 2000 consultado: ' || v_saldo);
+    -- 1. Consultar Saldo Propio (Usuario Frecuente)
+    v_saldo := PCK_USUARIO.consultar_mi_saldo(v_usuario_frecuente_id);
+    DBMS_OUTPUT.PUT_LINE('-> OK: Saldo de Usuario ' || v_usuario_frecuente_id || ' consultado: ' || v_saldo);
     
-    -- 2. Consultar Historial Propio (Usuario 2000)
-    v_cursor := PCK_USUARIO.consultar_mi_historial_apuestas(2000);
-    print_refcursor_results(v_cursor, 'Historial de Apuestas de Usuario 2000');
+    -- 2. Consultar Historial Propio (Usuario Frecuente)
+    v_cursor := PCK_USUARIO.consultar_mi_historial_apuestas(v_usuario_frecuente_id);
+    print_refcursor_results(v_cursor, 'Historial de Apuestas de Usuario ' || v_usuario_frecuente_id);
 
 
     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
     DBMS_OUTPUT.PUT_LINE(' FIN DE CREACIÓN DE DATOS. Se hace COMMIT. ');
+    DBMS_OUTPUT.PUT_LINE(' Los IDs generados son variables y persisten en la base.');
     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
     
     COMMIT;
@@ -159,3 +173,6 @@ END generar_datos_seguridad_ok;
 
 -- 2. EJECUCIÓN DEL PROCEDIMIENTO
 EXEC generar_datos_seguridad_ok;
+
+-- 3. LIMPIEZA DE OBJETO AUXILIAR (Se mantiene la limpieza del auxiliar)
+DROP PROCEDURE print_refcursor_results;

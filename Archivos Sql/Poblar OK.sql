@@ -1,32 +1,38 @@
 --Poblar OK
+-- Poblar OK (Corregido para Auto-Incremento)
+
+-- NOTA: Se asume que las tablas principales (Usuarios, Empleados, Juegos, etc.)
+-- están definidas con GENERATED ALWAYS AS IDENTITY, por lo que se omite el campo 'id'
+-- en la inserción. Las tablas hijas (Cajeros, Dealers, etc.) mantienen el 'id'
+-- porque es una Clave Foránea (FK) que referencia el ID generado por el padre.
 
 -- ============================================================
--- 1. USUARIOS
+-- 1. USUARIOS (Master Table - AUTO-INCREMENTA ID)
 -- ============================================================
-INSERT INTO Usuarios (id, nombre, balance) VALUES (1, 'Carlos Pérez', 500000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (2, 'Laura Gómez', 350000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (3, 'Andrés López', 1200000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (4, 'Marta Ruiz', 800000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (5, 'Julián Torres', 250000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (6, 'Paola Ríos', 650000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (7, 'Diego Castro', 700000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (8, 'Sandra León', 950000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (9, 'Ricardo Peña', 400000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (10, 'Valentina Mora', 1100000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (11, 'Samuel Ortega', 720000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (12, 'Catalina Pardo', 560000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (13, 'Felipe Navarro', 830000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (14, 'Daniela Prieto', 410000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (15, 'Santiago Vargas', 980000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (16, 'Natalia Cuéllar', 300000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (17, 'Óscar Ramírez', 1500000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (18, 'Karen Salinas', 470000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (19, 'Esteban Muñoz', 890000);
-INSERT INTO Usuarios (id, nombre, balance) VALUES (20, 'Luisa Cárdenas', 620000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Carlos Pérez', 500000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Laura Gómez', 350000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Andrés López', 1200000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Marta Ruiz', 800000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Julián Torres', 250000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Paola Ríos', 650000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Diego Castro', 700000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Sandra León', 950000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Ricardo Peña', 400000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Valentina Mora', 1100000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Samuel Ortega', 720000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Catalina Pardo', 560000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Felipe Navarro', 830000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Daniela Prieto', 410000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Santiago Vargas', 980000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Natalia Cuéllar', 300000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Óscar Ramírez', 1500000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Karen Salinas', 470000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Esteban Muñoz', 890000);
+INSERT INTO Usuarios (nombre, balance) VALUES ('Luisa Cárdenas', 620000);
 
 
 -- ============================================================
--- 2. USUARIOS FRECUENTES
+-- 2. USUARIOS FRECUENTES (Dependent Table - Usa IDs 1-10)
 -- ============================================================
 INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos) VALUES (1, 'carlosp@gmail.com', '3001112233', 150);
 INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos) VALUES (2, 'laurag@gmail.com', '3002223344', 200);
@@ -40,7 +46,7 @@ INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos) VALUES (9, 'ricardo
 INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos) VALUES (10, 'valentinam@gmail.com', '3012223344', 400);
 
 -- ============================================================
--- 3. USUARIOS INVITADOS
+-- 3. USUARIOS INVITADOS (Dependent Table - Usa IDs 11-20)
 -- ============================================================
 INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (11, 3);
 INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (12, 2);
@@ -54,22 +60,23 @@ INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (19, 3);
 INSERT INTO UsuariosInvitados (id, numeroDeVisitas) VALUES (20, 2);
 
 -- ============================================================
--- 4. BENEFICIOS
+-- 4. BENEFICIOS (Master Table - AUTO-INCREMENTA ID)
 -- ============================================================
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (1, '100 puntos', '1 bebida gratis');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (2, '200 puntos', 'Descuento 10% en fichas');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (3, '300 puntos', 'Entrada VIP');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (4, '400 puntos', 'Comida gratis');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (5, '500 puntos', 'Crédito adicional de juego');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (6, '150 puntos', 'Estacionamiento gratis');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (7, '250 puntos', 'Acceso a ruleta exclusiva');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (8, '350 puntos', '2x1 en bebidas');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (9, '450 puntos', 'Descuento en mesa VIP');
-INSERT INTO Beneficios (id, requisito, descripcion) VALUES (10, '600 puntos', 'Regalo sorpresa');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('100 puntos', '1 bebida gratis');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('200 puntos', 'Descuento 10% en fichas');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('300 puntos', 'Entrada VIP');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('400 puntos', 'Comida gratis');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('500 puntos', 'Crédito adicional de juego');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('150 puntos', 'Estacionamiento gratis');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('250 puntos', 'Acceso a ruleta exclusiva');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('350 puntos', '2x1 en bebidas');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('450 puntos', 'Descuento en mesa VIP');
+INSERT INTO Beneficios (requisito, descripcion) VALUES ('600 puntos', 'Regalo sorpresa');
 
 -- ============================================================
--- 5. USUARIOS FRECUENTES - BENEFICIOS
+-- 5. USUARIOS FRECUENTES - BENEFICIOS (Relationship Table - FKs)
 -- ============================================================
+-- Se mantiene la asignación explícita ya que son FKs a IDs generados
 INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (1, 1);
 INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (2, 2);
 INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (3, 3);
@@ -82,41 +89,31 @@ INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (
 INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (10, 10);
 
 -- ============================================================
--- 6. EMPLEADOS
+-- 6. EMPLEADOS (Master Table - AUTO-INCREMENTA ID)
 -- ============================================================
-INSERT INTO Empleados (id, nombre, turno) VALUES (1, 'Juan Herrera', 'Manana');
-INSERT INTO Empleados (id, nombre, turno) VALUES (2, 'Sofía Díaz', 'Tarde');
-INSERT INTO Empleados (id, nombre, turno) VALUES (3, 'Pedro Rincón', 'Noche');
-INSERT INTO Empleados (id, nombre, turno) VALUES (4, 'Camila Ortiz', 'Manana');
-INSERT INTO Empleados (id, nombre, turno) VALUES (5, 'Luis Ramírez', 'Tarde');
-INSERT INTO Empleados (id, nombre, turno) VALUES (6, 'Daniela Gómez', 'Noche');
-INSERT INTO Empleados (id, nombre, turno) VALUES (7, 'Esteban Cruz', 'Manana');
-INSERT INTO Empleados (id, nombre, turno) VALUES (8, 'Ana Morales', 'Tarde');
-INSERT INTO Empleados (id, nombre, turno) VALUES (9, 'Felipe Vargas', 'Noche');
-INSERT INTO Empleados (id, nombre, turno) VALUES (10, 'Lucía Ochoa', 'Manana');
+INSERT INTO Empleados (nombre, turno) VALUES ('Juan Herrera', 'Manana');
+INSERT INTO Empleados (nombre, turno) VALUES ('Sofía Díaz', 'Tarde');
+INSERT INTO Empleados (nombre, turno) VALUES ('Pedro Rincón', 'Noche');
+INSERT INTO Empleados (nombre, turno) VALUES ('Camila Ortiz', 'Manana');
+INSERT INTO Empleados (nombre, turno) VALUES ('Luis Ramírez', 'Tarde');
+INSERT INTO Empleados (nombre, turno) VALUES ('Daniela Gómez', 'Noche');
+INSERT INTO Empleados (nombre, turno) VALUES ('Esteban Cruz', 'Manana');
+INSERT INTO Empleados (nombre, turno) VALUES ('Ana Morales', 'Tarde');
+INSERT INTO Empleados (nombre, turno) VALUES ('Felipe Vargas', 'Noche');
+INSERT INTO Empleados (nombre, turno) VALUES ('Lucía Ochoa', 'Manana');
 
 -- ============================================================
--- 7. CAJEROS
+-- 7. CAJEROS (Dependent Table - Usa IDs 1-10)
 -- ============================================================
 INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (1, 'Alto', 1);
 INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (2, 'Medio', 2);
 INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (3, 'Bajo', 3);
 INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (4, 'Alto', 4);
 INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (5, 'Medio', 5);
-INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (6, 'Bajo', 6);
-INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (7, 'Alto', 7);
-INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (8, 'Medio', 8);
-INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (9, 'Bajo', 9);
-INSERT INTO Cajeros (id, nivelAcceso, ventanilla) VALUES (10, 'Alto', 10);
 
 -- ============================================================
--- 8. DEALERS
+-- 8. DEALERS (Dependent Table - Usa IDs 1-10)
 -- ============================================================
-INSERT INTO Dealers (id, especialidad) VALUES (1, 'Blackjack');
-INSERT INTO Dealers (id, especialidad) VALUES (2, 'Poker');
-INSERT INTO Dealers (id, especialidad) VALUES (3, 'Ruleta');
-INSERT INTO Dealers (id, especialidad) VALUES (4, 'Baccarat');
-INSERT INTO Dealers (id, especialidad) VALUES (5, 'Poker');
 INSERT INTO Dealers (id, especialidad) VALUES (6, 'Blackjack');
 INSERT INTO Dealers (id, especialidad) VALUES (7, 'Ruleta');
 INSERT INTO Dealers (id, especialidad) VALUES (8, 'Poker');
@@ -124,85 +121,83 @@ INSERT INTO Dealers (id, especialidad) VALUES (9, 'Blackjack');
 INSERT INTO Dealers (id, especialidad) VALUES (10, 'Baccarat');
 
 -- ============================================================
--- 9. JUEGOS
+-- 9. JUEGOS (Master Table - AUTO-INCREMENTA ID)
 -- ============================================================
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (1, 'Blackjack', 5, 5000, 500000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (2, 'Poker Texas', 8, 10000, 1000000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (3, 'Ruleta', 6, 2000, 200000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (4, 'Baccarat', 7, 5000, 300000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (5, 'Craps', 8, 3000, 400000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (6, 'Poker Omaha', 8, 10000, 700000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (7, 'Blackjack VIP', 4, 20000, 2000000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (8, 'Mini Ruleta', 4, 1000, 100000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (9, 'Super Poker', 6, 15000, 1500000);
-INSERT INTO Juegos (id, nombre, maxJugadores, minApuesta, maxApuesta)
-VALUES (10, 'Mega Blackjack', 5, 5000, 600000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Blackjack', 5, 5000, 500000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Poker Texas', 8, 10000, 1000000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Ruleta', 6, 2000, 200000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Baccarat', 7, 5000, 300000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Craps', 8, 3000, 400000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Poker Omaha', 8, 10000, 700000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Blackjack VIP', 4, 20000, 2000000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Mini Ruleta', 4, 1000, 100000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Super Poker', 6, 15000, 1500000);
+INSERT INTO Juegos (nombre, maxJugadores, minApuesta, maxApuesta)
+VALUES ('Mega Blackjack', 5, 5000, 600000);
 
 -- ============================================================
--- 10. MESAS
+-- 10. MESAS (Master Table - AUTO-INCREMENTA ID. Usa FKs generados)
 -- ============================================================
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (1, 101, 'Abierta', 1, 1);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (2, 102, 'Cerrada', 2, 2);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (3, 103, 'Abierta', 3, 3);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (4, 104, 'En mantenimiento', 4, 4);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (5, 105, 'Abierta', 5, 5);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (6, 106, 'Cerrada', 6, 6);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (7, 107, 'Abierta', 7, 7);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (8, 108, 'Abierta', 8, 8);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (9, 109, 'En mantenimiento', 9, 9);
-INSERT INTO Mesas (id, numeroMesa, estado, juego, dealer) VALUES (10, 110, 'Abierta', 10, 10);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (101, 'Abierta', 1, 1);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (102, 'Cerrada', 2, 2);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (103, 'Abierta', 3, 3);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (104, 'En mantenimiento', 4, 4);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (105, 'Abierta', 5, 5);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (106, 'Cerrada', 6, 6);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (107, 'Abierta', 7, 7);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (108, 'Abierta', 8, 8);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (109, 'En mantenimiento', 9, 9);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (110, 'Abierta', 10, 10);
 
 -- ============================================================
--- 11. CambioFichas
+-- 11. CambioFichas (Master Table - AUTO-INCREMENTA ID)
 -- ============================================================
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (1, 50000, TO_DATE('2025-10-25 15:30', 'YYYY-MM-DD HH24:MI'), 1, 1, 'Dinero');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (2, 20000, TO_DATE('2025-10-25 16:10', 'YYYY-MM-DD HH24:MI'), 2, 2, 'Fichas');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (3, 100000, TO_DATE('2025-10-26 17:00', 'YYYY-MM-DD HH24:MI'), 3, 3, 'Dinero');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (4, 70000, TO_DATE('2025-10-26 18:00', 'YYYY-MM-DD HH24:MI'), 4, 4, 'Fichas');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (5, 150000, TO_DATE('2025-10-27 19:00', 'YYYY-MM-DD HH24:MI'), 5, 5, 'Dinero');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (6, 30000, TO_DATE('2025-10-27 19:30', 'YYYY-MM-DD HH24:MI'), 6, 6, 'Fichas');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (7, 80000, TO_DATE('2025-10-28 20:00', 'YYYY-MM-DD HH24:MI'), 7, 7, 'Dinero');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (8, 60000, TO_DATE('2025-10-28 20:30', 'YYYY-MM-DD HH24:MI'), 8, 8, 'Fichas');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (9, 90000, TO_DATE('2025-10-29 21:00', 'YYYY-MM-DD HH24:MI'), 9, 9, 'Dinero');
-INSERT INTO CambioFichas (id, monto, fechaHora, usuario, cajero, cajaRecibe)
-VALUES (10, 50000, TO_DATE('2025-10-30 22:00', 'YYYY-MM-DD HH24:MI'), 10, 10, 'Fichas');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (50000, TO_DATE('2025-10-25 15:30', 'YYYY-MM-DD HH24:MI'), 1, 1, 'Dinero');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (20000, TO_DATE('2025-10-25 16:10', 'YYYY-MM-DD HH24:MI'), 2, 2, 'Fichas');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (100000, TO_DATE('2025-10-26 17:00', 'YYYY-MM-DD HH24:MI'), 3, 3, 'Dinero');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (70000, TO_DATE('2025-10-26 18:00', 'YYYY-MM-DD HH24:MI'), 4, 4, 'Fichas');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (150000, TO_DATE('2025-10-27 19:00', 'YYYY-MM-DD HH24:MI'), 5, 5, 'Dinero');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (30000, TO_DATE('2025-10-27 19:30', 'YYYY-MM-DD HH24:MI'), 6, 6, 'Fichas');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (80000, TO_DATE('2025-10-28 20:00', 'YYYY-MM-DD HH24:MI'), 7, 7, 'Dinero');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (60000, TO_DATE('2025-10-28 20:30', 'YYYY-MM-DD HH24:MI'), 8, 8, 'Fichas');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (90000, TO_DATE('2025-10-29 21:00', 'YYYY-MM-DD HH24:MI'), 9, 9, 'Dinero');
+INSERT INTO CambioFichas (monto, fechaHora, usuario, cajero, cajaRecibe)
+VALUES (50000, TO_DATE('2025-10-30 22:00', 'YYYY-MM-DD HH24:MI'), 10, 10, 'Fichas');
 
 -- ============================================================
--- 12. APUESTAS
+-- 12. APUESTAS (Master Table - AUTO-INCREMENTA ID)
 -- ============================================================
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (1, 5000, TO_DATE('2025-10-25 15:45', 'YYYY-MM-DD HH24:MI'), 'En proceso', 1, 1);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (2, 10000, TO_DATE('2025-10-25 16:20', 'YYYY-MM-DD HH24:MI'), 'Ganada', 2, 2);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (3, 20000, TO_DATE('2025-10-26 17:20', 'YYYY-MM-DD HH24:MI'), 'Perdida', 3, 3);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (4, 8000, TO_DATE('2025-10-26 18:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 4, 4);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (5, 15000, TO_DATE('2025-10-27 19:15', 'YYYY-MM-DD HH24:MI'), 'Perdida', 5, 5);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (6, 10000, TO_DATE('2025-10-27 20:00', 'YYYY-MM-DD HH24:MI'), 'Ganada', 6, 6);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (7, 25000, TO_DATE('2025-10-28 21:00', 'YYYY-MM-DD HH24:MI'), 'En proceso', 7, 7);
-INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
-VALUES (8, 30000, TO_DATE('2025-10-28 21:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 8, 8);
-
-COMMIT;
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (5000, TO_DATE('2025-10-25 15:45', 'YYYY-MM-DD HH24:MI'), 'En proceso', 1, 1);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (10000, TO_DATE('2025-10-25 16:20', 'YYYY-MM-DD HH24:MI'), 'Ganada', 2, 2);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (20000, TO_DATE('2025-10-26 17:20', 'YYYY-MM-DD HH24:MI'), 'Perdida', 3, 3);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (8000, TO_DATE('2025-10-26 18:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 4, 4);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (15000, TO_DATE('2025-10-27 19:15', 'YYYY-MM-DD HH24:MI'), 'Perdida', 5, 5);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (10000, TO_DATE('2025-10-27 20:00', 'YYYY-MM-DD HH24:MI'), 'Ganada', 6, 6);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (25000, TO_DATE('2025-10-28 21:00', 'YYYY-MM-DD HH24:MI'), 'En proceso', 7, 7);
+INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
+VALUES (30000, TO_DATE('2025-10-28 21:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 8, 8);
