@@ -112,11 +112,13 @@ CREATE TABLE Torneos (
     START WITH 1
     INCREMENT BY 1,
     nombre VARCHAR2(100) NOT NULL,
+    jugadoresActuales NUMBER(20),
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
     estado VARCHAR2(20) NOT NULL,  -- Activo, Finalizado, Cancelado
+    valorEntrada NUMBER(20) NOT NULL,
     pozoDePremios NUMBER(20) NOT NULL,  -- Total de premios
-    juego NUMBER(10) NOT NULL,  -- FK a JuegosTorneo
+    juego NUMBER(10) NOT NULL,  -- FK a Juegos
 );
 
 
