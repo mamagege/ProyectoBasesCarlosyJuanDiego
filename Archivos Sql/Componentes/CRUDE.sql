@@ -32,7 +32,11 @@ CREATE OR REPLACE PACKAGE PCK_EXCEPCIONES AS
 END PCK_EXCEPCIONES;
 /
 
-
+CREATE OR REPLACE PACKAGE PKG_TRG_PROMOVER_HELPER AS
+    TYPE t_id_list IS TABLE OF UsuariosInvitados.id%TYPE INDEX BY PLS_INTEGER;
+    g_ids_a_eliminar t_id_list;
+END PKG_TRG_PROMOVER_HELPER;
+/
 -- ==========================================================
 -- 2. PCK_MANTENIMIENTO: CRUD para Tablas Maestras
 -- (Se elimina p_id de todos los procedimientos CREATE)
@@ -125,12 +129,12 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
     -- -------------------------
     -- 2.7 USUARIOS (CREATE)
     -- -------------------------
-    PROCEDURE crear_usuario_frecuente(
+    PROCEDURE actualizar_datos_usuario_frecuente(
         -- p_id se elimina. El ID se generará automáticamente.
-        p_nombre        IN Usuarios.nombre%TYPE,
-        p_balance       IN Usuarios.balance%TYPE,
-        p_correo        IN UsuariosFrecuentes.correo%TYPE,
-        p_celular       IN UsuariosFrecuentes.celular%TYPE
+        p_id IN UsuariosFrecuentes.id%TYPE,
+        p_nombre_nuevo IN Usuarios.nombre%TYPE DEFAULT NULL,
+        p_correo_nuevo IN UsuariosFrecuentes.correo%TYPE DEFAULT NULL,
+        p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
     );
 
     PROCEDURE crear_usuario_invitado(
@@ -140,6 +144,8 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
     );
 
     PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE);
+
+    
 
     
     -- -------------------------
@@ -238,6 +244,11 @@ CREATE OR REPLACE PACKAGE PCK_USUARIOS_FUNC AS
 
     FUNCTION consultar_saldo(p_usuario_id IN Usuarios.id%TYPE)
         RETURN Usuarios.balance%TYPE;
+
+    FUNCTION consultar_historial_usuario(p_usuario_id IN Usuarios.id%TYPE)
+        RETURN SYS_REFCURSOR;
+        
+    
         
 END PCK_USUARIOS_FUNC;
 /

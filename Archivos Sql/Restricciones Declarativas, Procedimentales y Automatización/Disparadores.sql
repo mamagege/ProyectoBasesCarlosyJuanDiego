@@ -78,25 +78,54 @@ END;
 -- TRIGGER: Promover automáticamente a Usuario Frecuente
 --------------------------------------------------------------------------------
 CREATE OR REPLACE TRIGGER trg_promover_a_frecuente
-AFTER UPDATE OF numeroDeVisitas ON UsuariosInvitados
-FOR EACH ROW
-DECLARE
-    v_existente NUMBER;
-BEGIN
-    IF :NEW.numeroDeVisitas >= 10 THEN
-        SELECT COUNT(*) INTO v_existente
-        FROM UsuariosFrecuentes
-        WHERE id = :NEW.id;
+FOR UPDATE OF numeroDeVisitas ON UsuariosInvitados
+COMPOUND TRIGGER
 
-        IF v_existente = 0 THEN
-            INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos)
-            VALUES (:NEW.id, NULL, NULL, 0);
+    v_idx PLS_INTEGER := 0;
+
+    AFTER EACH ROW IS
+        v_existente NUMBER;
+    BEGIN
+        -- 1. Verificar si alcanzó el umbral (>= 10)
+        IF :NEW.numeroDeVisitas >= 10 THEN
+            
+            -- 2. Verificar que no exista ya en UsuariosFrecuentes
+            SELECT COUNT(*) INTO v_existente
+            FROM UsuariosFrecuentes
+            WHERE id = :NEW.id;
+
+            IF v_existente = 0 THEN
+                -- 3. Insertar el registro en UsuariosFrecuentes (¡Usando NULL para los datos faltantes!)
+                INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos)
+                VALUES (
+                    :NEW.id, 
+                    NULL,   -- CORRECCIÓN: Se usa NULL porque :NEW.correo no existe en UsuariosInvitados
+                    NULL,   -- CORRECCIÓN: Se usa NULL porque :NEW.celular no existe en UsuariosInvitados
+                    0
+                );
+
+                -- 4. Guardar el ID para eliminarlo después del UPDATE
+                v_idx := PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar.COUNT + 1;
+                PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar(v_idx) := :NEW.id;
+            END IF;
         END IF;
-    END IF;
-END;
+    END AFTER EACH ROW;
 
+    AFTER STATEMENT IS
+    BEGIN
+        -- 5. Eliminar los IDs guardados (Ocurre aquí para evitar el error de tabla mutante)
+        IF PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar.COUNT > 0 THEN
+            FOR i IN PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar.FIRST .. PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar.LAST LOOP
+                DELETE FROM UsuariosInvitados
+                WHERE id = PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar(i);
+            END LOOP;
+        END IF;
+        
+        PKG_TRG_PROMOVER_HELPER.g_ids_a_eliminar.DELETE;
+    END AFTER STATEMENT;
+
+END trg_promover_a_frecuente;
 /
-
 --Registro: Un usuario invitado no puede recibir Beneficios
 
 --------------------------------------------------------------------------------
@@ -117,6 +146,8 @@ BEGIN
     END IF;
 END;
 /
+
+
 
 
 

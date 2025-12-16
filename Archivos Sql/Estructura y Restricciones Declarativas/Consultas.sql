@@ -7,7 +7,7 @@
 SELECT juegos.id, juegos.nombre, COUNT(apuestas.estado) AS Total_Apuestas_Perdidas FROM JUEGOS
 JOIN APUESTAS ON juegos.id = apuestas.id
 WHERE apuestas.estado = 'Perdida'
-GROUP BY juegos.id, juegos.nombre
+GROUP BY juegos.id, juegos.nombre;
 
 
 --¿Quiénes son los clientes más valiosos?
@@ -19,7 +19,7 @@ GROUP BY juegos.id, juegos.nombre
 SELECT UsuariosFrecuentes.id, Usuarios.nombre, apuestas.monto FROM UsuariosFrecuentes
 JOIN APUESTAS on UsuariosFrecuentes.id = apuestas.id 
 JOIN USUARIOS on UsuariosFrecuentes.id = Usuarios.id 
-ORDER BY apuestas.monto DESC
+ORDER BY apuestas.monto DESC;
 
 --Por cantidad de apuestas perdidas
 
@@ -27,18 +27,18 @@ SELECT UsuariosFrecuentes.id, Usuarios.nombre, COUNT(apuestas.estado) AS Total_A
 JOIN APUESTAS on UsuariosFrecuentes.id = apuestas.id 
 JOIN USUARIOS on UsuariosFrecuentes.id = Usuarios.id 
 WHERE apuestas.estado = 'Perdida'
-GROUP BY Usuarios.nombre, UsuariosFrecuentes.id
+GROUP BY Usuarios.nombre, UsuariosFrecuentes.id;
 
 --Por cantidad de cambio de fichas
 
 SELECT UsuariosFrecuentes.id, Usuarios.nombre, CambioFichas.monto FROM UsuariosFrecuentes
 JOIN CambioFichas on UsuariosFrecuentes.id = CambioFichas.id 
 JOIN USUARIOS on UsuariosFrecuentes.id = Usuarios.id
-ORDER BY CambioFichas.monto DESC
+ORDER BY CambioFichas.monto DESC;
 
 --¿Cuales son los dealers que generan mas ingresos para el casino?
 
-SELECT Dealers.id, Empleados.nombre, COUNT(apuestas.estado) FROM DEALERS
+SELECT Dealers.id, Empleados.nombre, COUNT(apuestas.estado) AS TOTAL_PERDIDOS FROM DEALERS
 JOIN APUESTAS ON apuestas.id = dealers.id 
 JOIN EMPLEADOS ON empleados.id = dealers.id
-GROUP BY Dealers.id, Empleados.nombre
+GROUP BY Dealers.id, Empleados.nombre;

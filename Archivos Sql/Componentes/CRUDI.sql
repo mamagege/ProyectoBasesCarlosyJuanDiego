@@ -1,4 +1,4 @@
---Correcion CRUDI
+--CRUDI
 
 SET SERVEROUTPUT ON;
 WHENEVER SQLERROR EXIT FAILURE;
@@ -123,30 +123,41 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
     -- -------------------------
     -- 2.7 USUARIOS (CREATE) - Frecuente
     -- -------------------------
-    PROCEDURE crear_usuario_frecuente(
-        p_nombre        IN Usuarios.nombre%TYPE,
-        p_balance       IN Usuarios.balance%TYPE,
-        p_correo        IN UsuariosFrecuentes.correo%TYPE,
-        p_celular       IN UsuariosFrecuentes.celular%TYPE
-    ) AS
-        v_new_id Usuarios.id%TYPE; -- Variable para capturar el ID
-    BEGIN
-        -- 1. Insertar en tabla padre (Usuarios) y capturar el ID
-        INSERT INTO Usuarios (nombre, balance)
-        VALUES (p_nombre, p_balance)
-        RETURNING id INTO v_new_id;
+ PROCEDURE actualizar_datos_usuario_frecuente(
+    p_id IN UsuariosFrecuentes.id%TYPE,
+    p_nombre_nuevo IN Usuarios.nombre%TYPE DEFAULT NULL,
+    p_correo_nuevo IN UsuariosFrecuentes.correo%TYPE DEFAULT NULL,
+    p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
+) AS
+    v_rows_affected NUMBER := 0;
+BEGIN
+    -- 1. Actualizar tabla padre (Usuarios)
+    UPDATE Usuarios
+    SET nombre = NVL(p_nombre_nuevo, nombre)
+    WHERE id = p_id;
+    
+    v_rows_affected := v_rows_affected + SQL%ROWCOUNT;
 
-        -- 2. Insertar en tabla hija (UsuariosFrecuentes)
-        INSERT INTO UsuariosFrecuentes (id, correo, celular, puntos)
-        VALUES (v_new_id, p_correo, p_celular, 0);
+    -- 2. Actualizar tabla hija (UsuariosFrecuentes)
+    UPDATE UsuariosFrecuentes
+    SET correo = NVL(p_correo_nuevo, correo),
+        celular = NVL(p_celular_nuevo, celular)
+    WHERE id = p_id;
 
-        COMMIT;
-    EXCEPTION
-        WHEN DUP_VAL_ON_INDEX THEN
-             RAISE_APPLICATION_ERROR(-20101, 'Error 20101: El ID (generado) o correo ya existe.');
-        WHEN OTHERS THEN
-            RAISE;
-    END crear_usuario_frecuente;
+    v_rows_affected := v_rows_affected + SQL%ROWCOUNT;
+    
+    -- 3. Validar si existe (el usuario debe existir al menos en Usuarios)
+    IF v_rows_affected = 0 THEN
+        RAISE_APPLICATION_ERROR(-20102, 'Error 20102: Usuario frecuente con ID ' || p_id || ' no encontrado para actualizar.');
+    END IF;
+
+    COMMIT;
+EXCEPTION
+    WHEN DUP_VAL_ON_INDEX THEN
+         RAISE_APPLICATION_ERROR(-20101, 'Error 20101: El correo o celular ya está en uso por otro usuario.');
+    WHEN OTHERS THEN
+        RAISE;
+END actualizar_datos_usuario_frecuente;
 
     -- -------------------------
     -- 2.7 USUARIOS (CREATE) - Invitado
@@ -174,40 +185,37 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
             RAISE;
     END crear_usuario_invitado;
 
+    
+
 
     PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE) AS
-        v_es_invitado BOOLEAN := FALSE;
-        v_visitas UsuariosInvitados.numeroDeVisitas%TYPE;
+        v_dummy NUMBER;
     BEGIN
-        -- 1. Verificar si el usuario es un invitado
-        SELECT numeroDeVisitas INTO v_visitas
-        FROM UsuariosInvitados
-        WHERE id = p_usuario_id;
-        
-        v_es_invitado := TRUE;
-        
-        -- 2. Actualizar el contador de visitas (el trigger trg_promover_a_frecuente se encargará de la promoción)
+        -- Incrementa visitas solo si el usuario es invitado
         UPDATE UsuariosInvitados
-        SET numeroDeVisitas = numeroDeVisitas + 1
+        SET numeroDeVisitas = NVL(numeroDeVisitas, 0) + 1
         WHERE id = p_usuario_id;
-        
-        COMMIT;
-        
+
+        IF SQL%ROWCOUNT = 1 THEN
+            COMMIT;
+            RETURN;
+        END IF;
+
+        -- Si no era invitado, validar si existe como frecuente o si no existe
+        BEGIN
+            SELECT 1 INTO v_dummy
+            FROM UsuariosFrecuentes
+            WHERE id = p_usuario_id;
+
+            -- Si existe como frecuente, es un error de negocio
+            RAISE_APPLICATION_ERROR(-20105,
+                'Error 20105: No se puede registrar visita al usuario ' || p_usuario_id || '. Solo aplica a invitados.');
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_usuario_id || ' no existe.');
+        END;
+
     EXCEPTION
-        WHEN NO_DATA_FOUND THEN
-            -- Si no está en UsuariosInvitados, es un Frecuente o no existe
-            BEGIN
-                SELECT 'X' INTO v_visitas FROM UsuariosFrecuentes WHERE id = p_usuario_id;
-                
-                -- Si existe en Frecuentes, lanza el error de negocio
-                RAISE_APPLICATION_ERROR(-20105, 'Error 20105: No se puede registrar visita al usuario ' || p_usuario_id || '. Solo aplica a invitados.');
-            EXCEPTION
-                WHEN NO_DATA_FOUND THEN
-                    -- Si no existe en ninguna, lanza el error de inexistencia
-                    RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_usuario_id || ' no existe.');
-                WHEN OTHERS THEN
-                    RAISE;
-            END;
         WHEN OTHERS THEN
             RAISE;
     END registrar_visita;
@@ -236,22 +244,29 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
         RETURN SYS_REFCURSOR
     IS
         v_cursor SYS_REFCURSOR;
+        v_dummy  NUMBER;
     BEGIN
+        -- Validar existencia del empleado antes de abrir el cursor
+        SELECT 1 INTO v_dummy
+        FROM Empleados
+        WHERE id = p_id;
+
         OPEN v_cursor FOR
-            SELECT e.id, e.nombre, e.turno, d.especialidad, c.nivelAcceso, c.ventanilla
+            SELECT e.id, e.nombre, e.turno,
+                   d.especialidad,
+                   c.nivelAcceso, c.ventanilla
             FROM Empleados e
             LEFT JOIN Dealers d ON e.id = d.id
-            LEFT JOIN Cajeros c ON e.id = c.id
+            LEFT JOIN Cajeros  c ON e.id = c.id
             WHERE e.id = p_id;
-            
-        -- Verificar si se encontró el empleado
-        FETCH v_cursor INTO v_cursor;
-        IF v_cursor%NOTFOUND THEN
-            CLOSE v_cursor;
-            RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El empleado con ID ' || p_id || ' no existe.');
-        END IF;
-        
+
         RETURN v_cursor;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El empleado con ID ' || p_id || ' no existe.');
+        WHEN OTHERS THEN
+            RAISE;
     END consultar_empleado;
 
     PROCEDURE actualizar_empleado(
@@ -273,17 +288,21 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
 
     PROCEDURE eliminar_empleado(p_id IN Empleados.id%TYPE) AS
     BEGIN
-        -- La eliminación se propagará a Dealers o Cajeros por la FK (ON DELETE CASCADE)
+        -- La eliminación se propagará a Dealers/Cajeros por la FK (ON DELETE CASCADE)
         DELETE FROM Empleados WHERE id = p_id;
 
         IF SQL%ROWCOUNT = 0 THEN
             RAISE_APPLICATION_ERROR(-20102, 'Error 20102: Empleado con ID ' || p_id || ' no encontrado para eliminar.');
         END IF;
+
         COMMIT;
     EXCEPTION
         WHEN OTHERS THEN
-            IF SQLCODE = -2292 THEN
-                RAISE_APPLICATION_ERROR(-20110, 'Error 20110: No se puede eliminar el empleado ' || p_id || ' porque tiene mesas o transacciones dependientes.');
+            -- -2292: hay dependencias. -1407: intento de ON DELETE SET NULL sobre columna NOT NULL (según modelo)
+            IF SQLCODE IN (-2292, -1407) THEN
+                RAISE_APPLICATION_ERROR(-20110,
+                    'Error 20110: No se puede eliminar el empleado ' || p_id ||
+                    ' porque tiene registros dependientes (mesas/transacciones).');
             ELSE
                 RAISE;
             END IF;
@@ -293,11 +312,22 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
         RETURN SYS_REFCURSOR
     IS
         v_cursor SYS_REFCURSOR;
+        v_dummy  NUMBER;
     BEGIN
+        SELECT 1 INTO v_dummy
+        FROM Juegos
+        WHERE id = p_id;
+
         OPEN v_cursor FOR
             SELECT * FROM Juegos WHERE id = p_id;
 
         RETURN v_cursor;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El juego con ID ' || p_id || ' no existe.');
+        WHEN OTHERS THEN
+            RAISE;
     END consultar_juego;
     
     PROCEDURE actualizar_juego(
@@ -347,15 +377,28 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
         RETURN SYS_REFCURSOR
     IS
         v_cursor SYS_REFCURSOR;
+        v_dummy  NUMBER;
     BEGIN
+        SELECT 1 INTO v_dummy
+        FROM Mesas
+        WHERE id = p_id;
+
         OPEN v_cursor FOR
-            SELECT m.id, m.numeroMesa, m.estado, j.nombre AS juego_nombre, e.nombre AS dealer_nombre
+            SELECT m.id, m.numeroMesa, m.estado,
+                   j.nombre AS juego_nombre,
+                   e.nombre AS dealer_nombre
             FROM Mesas m
             JOIN Juegos j ON m.juego = j.id
             JOIN Empleados e ON m.dealer = e.id
             WHERE m.id = p_id;
 
         RETURN v_cursor;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20102, 'Error 20102: La mesa con ID ' || p_id || ' no existe.');
+        WHEN OTHERS THEN
+            RAISE;
     END consultar_mesa;
 
     PROCEDURE actualizar_mesa_estado(
@@ -413,11 +456,13 @@ CREATE OR REPLACE PACKAGE BODY PCK_MANTENIMIENTO AS
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
     ) AS
     BEGIN
-        INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuario)
+        INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente)
         VALUES (p_beneficio_id, p_usuario_id);
-        
+
         COMMIT;
     EXCEPTION
+        WHEN DUP_VAL_ON_INDEX THEN
+            RAISE_APPLICATION_ERROR(-20101, 'Error 20101: El beneficio ya está asignado a ese usuario frecuente.');
         WHEN OTHERS THEN
             IF SQLCODE = -2291 THEN
                 RAISE_APPLICATION_ERROR(-20103, 'Error 20103: El beneficio o el usuario frecuente no existe.');
@@ -481,7 +526,13 @@ CREATE OR REPLACE PACKAGE BODY PCK_APUESTAS AS
         RETURN SYS_REFCURSOR
     IS
         v_cursor SYS_REFCURSOR;
+        v_dummy  NUMBER;
     BEGIN
+        -- Validar existencia del usuario
+        SELECT 1 INTO v_dummy
+        FROM Usuarios
+        WHERE id = p_usuario_id;
+
         OPEN v_cursor FOR
             SELECT a.id, j.nombre AS juego, a.monto, a.estado, a.fechaHora
             FROM Apuestas a
@@ -491,6 +542,12 @@ CREATE OR REPLACE PACKAGE BODY PCK_APUESTAS AS
             ORDER BY a.fechaHora DESC;
 
         RETURN v_cursor;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_usuario_id || ' no existe.');
+        WHEN OTHERS THEN
+            RAISE;
     END consultar_historial_usuario;
         
 END PCK_APUESTAS;
@@ -588,6 +645,35 @@ CREATE OR REPLACE PACKAGE BODY PCK_USUARIOS_FUNC AS
         WHEN OTHERS THEN
             RAISE;
     END consultar_saldo;
+
+    FUNCTION consultar_historial_usuario(p_usuario_id IN Usuarios.id%TYPE)
+        RETURN SYS_REFCURSOR
+    IS
+        v_cursor SYS_REFCURSOR;
+        v_dummy  NUMBER;
+    BEGIN
+        -- Validar existencia del usuario
+        SELECT 1 INTO v_dummy
+        FROM Usuarios
+        WHERE id = p_usuario_id;
+
+        OPEN v_cursor FOR
+            SELECT a.id, j.nombre AS juego, a.monto, a.estado, a.fechaHora
+            FROM Apuestas a
+            JOIN Mesas m ON a.mesa = m.id
+            JOIN Juegos j ON m.juego = j.id
+            WHERE a.usuario = p_usuario_id
+            ORDER BY a.fechaHora DESC;
+
+        RETURN v_cursor;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_usuario_id || ' no existe.');
+        WHEN OTHERS THEN
+            RAISE;
+    END consultar_historial_usuario;
+
         
 END PCK_USUARIOS_FUNC;
 /

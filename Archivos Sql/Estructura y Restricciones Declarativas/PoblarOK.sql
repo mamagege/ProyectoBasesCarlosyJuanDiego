@@ -147,16 +147,16 @@ VALUES ('Mega Blackjack', 5, 5000, 600000);
 -- ============================================================
 -- 10. MESAS (Master Table - AUTO-INCREMENTA ID. Usa FKs generados)
 -- ============================================================
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (101, 'Abierta', 1, 1);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (102, 'Cerrada', 2, 2);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (103, 'Abierta', 3, 3);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (104, 'En mantenimiento', 4, 4);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (105, 'Abierta', 5, 5);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (106, 'Cerrada', 6, 6);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (107, 'Abierta', 7, 7);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (108, 'Abierta', 8, 8);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (109, 'En mantenimiento', 9, 9);
-INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (110, 'Abierta', 10, 10);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (1, 'Abierta', 1, 1);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (2, 'Cerrada', 2, 2);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (3, 'Abierta', 3, 3);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (4, 'En mantenimiento', 4, 4);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (5, 'Abierta', 5, 5);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (6, 'Cerrada', 6, 6);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (7, 'Abierta', 7, 7);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (8, 'Abierta', 8, 8);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (9, 'En mantenimiento', 9, 9);
+INSERT INTO Mesas (numeroMesa, estado, juego, dealer) VALUES (10, 'Abierta', 10, 10);
 
 -- ============================================================
 -- 11. CambioFichas (Master Table - AUTO-INCREMENTA ID)
