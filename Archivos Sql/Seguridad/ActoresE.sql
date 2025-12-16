@@ -22,6 +22,10 @@ CREATE OR REPLACE PACKAGE PCK_ADM_SISTEMA AS
     FUNCTION consultar_empleado(p_id IN Empleados.id%TYPE)
         RETURN SYS_REFCURSOR;
 
+
+    FUNCTION consultar_usuario(p_id IN Usuarios.id%TYPE)
+        RETURN SYS_REFCURSOR;
+
     PROCEDURE actualizar_empleado(
         p_id            IN Empleados.id%TYPE,
         p_nombre        IN Empleados.nombre%TYPE DEFAULT NULL,
@@ -78,7 +82,10 @@ CREATE OR REPLACE PACKAGE PCK_ADM_SISTEMA AS
 
     -- Eliminación Genérica
     PROCEDURE eliminar_usuario(p_id IN Usuarios.id%TYPE);
+
+    PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE);
 END PCK_ADM_SISTEMA;
+
 /
 
 -- ==========================================================

@@ -145,9 +145,10 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
 
     PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE);
 
-    
+    FUNCTION consultar_usuario(p_id IN Usuarios.id%TYPE)
+    RETURN SYS_REFCURSOR;
 
-    
+
     -- -------------------------
     -- 2.8 USUARIOS (DELETE)
     -- -------------------------
@@ -167,6 +168,8 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
     );
 
+
+    PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE);
     
 
 END PCK_MANTENIMIENTO;

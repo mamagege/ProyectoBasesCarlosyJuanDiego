@@ -219,6 +219,37 @@ END actualizar_datos_usuario_frecuente;
         WHEN OTHERS THEN
             RAISE;
     END registrar_visita;
+
+
+    FUNCTION consultar_usuario(p_id IN Usuarios.id%TYPE)
+    RETURN SYS_REFCURSOR
+IS
+    v_cursor SYS_REFCURSOR;  -- Variable de cursor para retornar el resultado
+BEGIN
+    -- Abrir el cursor con la consulta que devuelve los detalles del usuario
+    OPEN v_cursor FOR
+        SELECT u.id, 
+               u.nombre, 
+               u.balance, 
+               -- Si no hay registro en UsuariosFrecuentes, correo y celular serán NULL
+               uf.correo, 
+               uf.celular
+        FROM Usuarios u
+        LEFT JOIN UsuariosFrecuentes uf ON u.id = uf.id
+        WHERE u.id = p_id;
+
+    -- Retornar el cursor con los resultados
+    RETURN v_cursor;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Si no se encuentra el usuario, generamos un error
+        RAISE_APPLICATION_ERROR(-20102, 'Error 20102: El usuario con ID ' || p_id || ' no existe.');
+    WHEN OTHERS THEN
+        -- Capturamos otros errores no anticipados
+        RAISE;
+END consultar_usuario;
+
     
     -- -------------------------
     -- 2.9 BENEFICIOS (CREATE)
@@ -237,6 +268,28 @@ END actualizar_datos_usuario_frecuente;
         WHEN OTHERS THEN
             RAISE;
     END crear_beneficio;
+
+    PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE) AS
+BEGIN
+    -- Eliminar primero las relaciones del beneficio en la tabla de asignaciones
+    DELETE FROM UsuariosFrecuentes_Beneficios
+    WHERE beneficio = p_id;
+
+    -- Ahora, eliminar el beneficio de la tabla Beneficios
+    DELETE FROM Beneficios
+    WHERE id = p_id;
+
+    COMMIT;  -- Confirmar los cambios
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Si no se encuentra el beneficio, se lanza un error
+        RAISE_APPLICATION_ERROR(-20103, 'El beneficio con ID ' || p_id || ' no existe.');
+    WHEN OTHERS THEN
+        -- Capturar otros errores no anticipados
+        RAISE;
+END eliminar_beneficio;
+
+
 
     -- *** READ, UPDATE, DELETE PROCEDURES *** (Se mantienen sin cambios en su lógica interna)
 

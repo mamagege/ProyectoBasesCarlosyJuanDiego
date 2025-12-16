@@ -36,6 +36,16 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         RETURN v_cursor;
     END consultar_empleado;
 
+
+    FUNCTION consultar_usuario(p_id IN Usuarios.id%TYPE)
+    RETURN SYS_REFCURSOR
+    AS
+        v_cursor SYS_REFCURSOR;
+    BEGIN
+        v_cursor := PCK_MANTENIMIENTO.consultar_usuario(p_id);
+        RETURN v_cursor;
+    END consultar_usuario;
+
     PROCEDURE actualizar_empleado(
         p_id            IN Empleados.id%TYPE,
         p_nombre        IN Empleados.nombre%TYPE DEFAULT NULL,
@@ -112,6 +122,13 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         PCK_MANTENIMIENTO.crear_beneficio(p_requisito, p_descripcion);
     END crear_beneficio;
 
+
+    PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE) AS
+    BEGIN
+        PCK_MANTENIMIENTO.eliminar_beneficio(p_id);
+    END eliminar_beneficio; 
+
+    
     PROCEDURE asignar_beneficio_a_frecuente(
         p_beneficio_id  IN Beneficios.id%TYPE,
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
