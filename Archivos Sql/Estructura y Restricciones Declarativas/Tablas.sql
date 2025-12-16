@@ -100,3 +100,45 @@ CREATE TABLE Apuestas (
     usuario NUMBER(10) NOT NULL,
     mesa NUMBER(10) NOT NULL
 );
+
+--Ciclo 2
+
+ALTER TABLE Mesas
+ADD torneo NUMBER(10);
+
+CREATE TABLE Torneos (
+    id NUMBER(10)
+    GENERATED ALWAYS AS IDENTITY
+    START WITH 1
+    INCREMENT BY 1,
+    nombre VARCHAR2(100) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    estado VARCHAR2(20) NOT NULL,  -- Activo, Finalizado, Cancelado
+    pozoDePremios NUMBER(20) NOT NULL,  -- Total de premios
+    juego NUMBER(10) NOT NULL,  -- FK a JuegosTorneo
+);
+
+
+CREATE TABLE Premios (
+    id NUMBER(10) 
+        GENERATED ALWAYS AS IDENTITY 
+        START WITH 1
+        INCREMENT BY 1,
+    torneo NUMBER(10) NOT NULL,  -- FK a Torneos
+    participante NUMBER(10) NOT NULL,  -- FK a Participantes
+    premio VARCHAR2(200) NOT NULL,  -- Descripción del premio
+    monto NUMBER(20),
+    estado VARCHAR2(20) NOT NULL,  -- Asignado, Entregado
+);
+
+CREATE TABLE Participantes (
+    id NUMBER(10)
+        GENERATED ALWAYS AS IDENTITY
+        START WITH 1
+        INCREMENT BY 1,
+    torneo NUMBER(10) NOT NULL,  -- FK a Torneos
+    usuario NUMBER(10) NOT NULL,  -- FK a Usuarios
+    fecha_registro DATE DEFAULT SYSDATE,
+    estado VARCHAR2(20) NOT NULL,  -- Inscrito, Eliminado
+);

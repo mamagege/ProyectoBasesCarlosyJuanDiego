@@ -32,3 +32,10 @@ DELETE FROM Empleados;
 
 -- 11. Finalmente, Usuarios (padre base)
 DELETE FROM Usuarios;
+
+--CICLO 2
+
+DELETE FROM Premios;
+DELETE FROM Participantes;
+DELETE FROM Torneos;
+DELETE FROM Mesas;

@@ -18,8 +18,13 @@ CHECK (cajaRecibe IN ('Dinero','Fichas'));
 ALTER TABLE EMPLEADOS ADD CONSTRAINT ck_Tturno
 CHECK (turno IN ('Manana','Tarde','Noche'));
 
+--Ciclo 2
 
+ALTER TABLE Torneos ADD CONSTRAINT ck_TestadoTorneo
+CHECK (estado IN ('Activo', 'Finalizado', 'Cancelado'));
 
+ALTER TABLE Premios ADD CONSTRAINT ck_TestadoPremio
+CHECK (estado IN ('Asignado', 'Entregado'));
 
-
-
+ALTER TABLE Torneos ADD CONSTRAINT ck_FechaTorneo
+CHECK (fecha_inicio < fecha_fin);

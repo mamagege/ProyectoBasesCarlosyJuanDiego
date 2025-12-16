@@ -35,10 +35,30 @@ CREATE INDEX idx_cambiofichas_caja
 ON CAMBIOFICHAS (cajarecibe);
 
 
+--CICLO 2
+
+-- Índice para consultar torneos por estado
+CREATE INDEX idx_torneos_estado 
+ON Torneos(estado);
+
+-- Índice para consultar torneos por nombre (si haces búsquedas por nombre)
+CREATE UNIQUE INDEX idx_torneos_nombre 
+ON Torneos(nombre);
 
 
+-- Índice para consultar mesas por torneo
+CREATE INDEX idx_mesas_torneo 
+ON Mesas(torneo);
+
+-- Índice para consultar mesas por estado
+CREATE INDEX idx_mesas_estado 
+ON Mesas(estado);
 
 
+-- Índice para consultar participantes por torneo
+CREATE INDEX idx_participantes_torneo 
+ON Participantes(torneo);
 
-
-
+-- Índice para consultar participantes por usuario
+CREATE INDEX idx_participantes_usuario 
+ON Participantes(usuario);
