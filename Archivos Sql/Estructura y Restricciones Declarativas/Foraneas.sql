@@ -39,3 +39,26 @@ FOREIGN KEY (beneficio) REFERENCES Beneficios(id);
 
 ALTER TABLE UsuariosFrecuentes_Beneficios ADD CONSTRAINT FK_UFB_UsuarioFrecuente
 FOREIGN KEY (usuarioFrecuente) REFERENCES UsuariosFrecuentes(id);
+
+--Ciclo 2
+ALTER TABLE Premios ADD CONSTRAINT FK_Premios_Torneo 
+FOREIGN KEY (torneo) REFERENCES Torneos(id);
+
+ALTER TABLE Premios ADD CONSTRAINT FK_Premios_Participante 
+FOREIGN KEY (participante) REFERENCES Participantes(id)
+ON DELETE CASCADE;
+
+ALTER TABLE Mesas ADD CONSTRAINT FK_Mesas_Torneos
+FOREIGN KEY (torneo) REFERENCES Torneos(id)
+ON DELETE SET NULL;
+
+
+ALTER TABLE Torneos ADD CONSTRAINT FK_Torneos_Juego 
+FOREIGN KEY (juego) REFERENCES JuegosTorneo(id);
+
+ALTER TABLE Participantes ADD CONSTRAINT FK_Participantes_Torneo 
+FOREIGN KEY (torneo) REFERENCES Torneos(id)
+ON DELETE CASCADE;
+
+ALTER TABLE Participantes ADD CONSTRAINT FK_Participantes_Usuario 
+FOREIGN KEY (usuario) REFERENCES Usuarios(id);

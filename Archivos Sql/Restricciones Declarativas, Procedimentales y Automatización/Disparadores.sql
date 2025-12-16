@@ -148,6 +148,72 @@ END;
 /
 
 
+--------------------------------------------------------------------------------
+-- TRIGGER: Aumentar jugadores actuales en torneo cada vez que se registra un participante
+--------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER trg_actualizar_jugadores_actuales
+AFTER INSERT ON Participantes
+FOR EACH ROW
+DECLARE
+    v_jugadores_actuales NUMBER(20);
+BEGIN
+    -- Comprobar si jugadoresActuales es NULL
+    SELECT NVL(jugadoresActuales, 0) INTO v_jugadores_actuales
+    FROM Torneos
+    WHERE id = :NEW.torneo;
+
+    -- Actualizar la columna jugadoresActuales
+    UPDATE Torneos
+    SET jugadoresActuales = v_jugadores_actuales + 1
+    WHERE id = :NEW.torneo;
+END;
+/
+
+--------------------------------------------------------------------------------
+-- TRIGGER: Aumentar pozo de premios cada vez que se registra un participante
+--------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER trg_actualizar_pozo_de_premios
+AFTER INSERT ON Participantes
+FOR EACH ROW
+DECLARE
+    v_valor_entrada NUMBER(20);
+    v_pozo_premios NUMBER(20);
+    v_incremento NUMBER(20);
+BEGIN
+    -- Obtener el valor de entrada y el pozo de premios del torneo
+    SELECT valorEntrada, pozoDePremios INTO v_valor_entrada, v_pozo_premios
+    FROM Torneos
+    WHERE id = :NEW.torneo;
+
+    -- Calcular el incremento (90% del valorEntrada)
+    v_incremento := v_valor_entrada * 0.9;
+
+    -- Actualizar el pozo de premios
+    UPDATE Torneos
+    SET pozoDePremios = v_pozo_premios + v_incremento
+    WHERE id = :NEW.torneo;
+END;
+/
 
 
+--------------------------------------------------------------------------------
+-- TRIGGER: Un usuario No se puede registrar en un torneo que no esté activo
+--------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER trg_comprobar_estado_torneo
+BEFORE INSERT ON Participantes
+FOR EACH ROW
+DECLARE
+    v_estado_torneo VARCHAR2(20);
+BEGIN
+    -- Obtener el estado del torneo
+    SELECT estado INTO v_estado_torneo
+    FROM Torneos
+    WHERE id = :NEW.torneo;
 
+    -- Comprobar si el estado del torneo es 'Activo'
+    IF v_estado_torneo != 'Activo' THEN
+        -- Si no está activo, generar un error
+        RAISE_APPLICATION_ERROR(-20001, 'No se puede registrar en un torneo que no esté activo.');
+    END IF;
+END;
+/
