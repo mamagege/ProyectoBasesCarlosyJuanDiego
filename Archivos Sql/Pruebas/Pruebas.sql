@@ -275,6 +275,7 @@ BEGIN
     PCK_CAJERO.registrar_cambio_fichas(500000, 22, 1, 'Dinero');  -- Juan Sanchez
 END;
 /
+
 --El administrador crea el torneo de poker
 -- 4. Creación de torneo de poker
 BEGIN
@@ -298,7 +299,7 @@ BEGIN
 END;
 /
 
---Despues de varias horas de torneo Juan es eliminado y, Juan consigue el primer lugar
+--Despues de varias horas de torneo Juan es eliminado y, Carlos consigue el primer lugar
 -- 7. Finalización del torneo (El ganador es asignado al finalizar el torneo)
 BEGIN
     PCK_USUARIO.actualizar_ganadores(6, 21, '1er Lugar - $1000000', 1000000);  -- Carlos gana el 1er lugar
@@ -320,7 +321,7 @@ END;
 -- 10. Ahora, Carlos Gaitan va a la caja a entregar el cheque por su premio
 -- El sistema registra el cheque y suma el valor del premio a su balance
 BEGIN
-    PCK_CAJERO.registrar_cambio_fichas(1000, 69, 31, 'Cheque');  -- Carlos entrega el cheque para su premio
+    PCK_CAJERO.registrar_cambio_fichas(10000000, 21, 5, 'Cheque');  -- Carlos entrega el cheque para su premio
 END;
 /
 
