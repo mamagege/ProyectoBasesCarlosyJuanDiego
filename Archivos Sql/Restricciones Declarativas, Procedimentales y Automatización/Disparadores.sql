@@ -148,52 +148,40 @@ END;
 /
 
 
---------------------------------------------------------------------------------
--- TRIGGER: Aumentar jugadores actuales en torneo cada vez que se registra un participante
---------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER trg_actualizar_jugadores_actuales
+CREATE OR REPLACE TRIGGER trg_actualizar_participantesYPozo
 AFTER INSERT ON Participantes
 FOR EACH ROW
 DECLARE
-    v_jugadores_actuales NUMBER(20);
+    v_jugadores_actuales NUMBER;
+    v_pozo_premios      NUMBER;
+    v_valor_entrada     NUMBER;
 BEGIN
-    -- Comprobar si jugadoresActuales es NULL
+    -- 1. Actualizar jugadoresActuales
+    -- Obtener el valor actual de jugadoresActuales para el torneo
     SELECT NVL(jugadoresActuales, 0) INTO v_jugadores_actuales
     FROM Torneos
     WHERE id = :NEW.torneo;
 
-    -- Actualizar la columna jugadoresActuales
+    -- Incrementar jugadoresActuales
     UPDATE Torneos
     SET jugadoresActuales = v_jugadores_actuales + 1
     WHERE id = :NEW.torneo;
-END;
-/
 
---------------------------------------------------------------------------------
--- TRIGGER: Aumentar pozo de premios cada vez que se registra un participante
---------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER trg_actualizar_pozo_de_premios
-AFTER INSERT ON Participantes
-FOR EACH ROW
-DECLARE
-    v_valor_entrada NUMBER(20);
-    v_pozo_premios NUMBER(20);
-    v_incremento NUMBER(20);
-BEGIN
+    -- 2. Actualizar pozoDePremios
     -- Obtener el valor de entrada y el pozo de premios del torneo
     SELECT valorEntrada, pozoDePremios INTO v_valor_entrada, v_pozo_premios
     FROM Torneos
     WHERE id = :NEW.torneo;
 
-    -- Calcular el incremento (90% del valorEntrada)
-    v_incremento := v_valor_entrada * 0.9;
-
-    -- Actualizar el pozo de premios
+    -- Incrementar el pozo de premios en un 90% del valor de entrada
     UPDATE Torneos
-    SET pozoDePremios = v_pozo_premios + v_incremento
+    SET pozoDePremios = v_pozo_premios + (v_valor_entrada * 0.9)
     WHERE id = :NEW.torneo;
+
+    COMMIT;
 END;
 /
+
 
 
 --------------------------------------------------------------------------------
