@@ -275,7 +275,7 @@ BEGIN
     PCK_CAJERO.registrar_cambio_fichas(500000, 22, 1, 'Dinero');  -- Juan Sanchez
 END;
 /
-
+--El administrador crea el torneo de poker
 -- 4. Creación de torneo de poker
 BEGIN
     PCK_ADM_SISTEMA.crear_torneo(
@@ -290,7 +290,7 @@ BEGIN
     );
 END;
 /
-
+-- El cajero registra a los participantes
 -- 5. Registro de participantes en el torneo
 BEGIN
     PCK_CAJERO.registrar_participante(6, 21, 'Inscrito');  -- Carlos Gaitan en el Torneo de Poker
@@ -298,18 +298,10 @@ BEGIN
 END;
 /
 
--- 6. Comprobación de estado de torneo antes de inscripción (debe estar 'Activo')
-BEGIN
-    -- Este trigger asegurará que solo los torneos activos permitan inscripciones
-    -- Si el torneo no está activo, se genera un error
-    PCK_DEALER.registrar_apuesta(100000, 21, 5);  -- Carlos Gaitan hace una apuesta
-END;
-/
-
+--Despues de varias horas de torneo Juan es eliminado y, Juan consigue el primer lugar
 -- 7. Finalización del torneo (El ganador es asignado al finalizar el torneo)
 BEGIN
-    -- Supongamos que al final del torneo, Carlos Gaitan es el ganador
-    PCK_USUARIO.actualizar_ganadores(6, 21, '1er Lugar - $1000', 1000);  -- Carlos gana el 1er lugar
+    PCK_USUARIO.actualizar_ganadores(6, 21, '1er Lugar - $1000000', 1000000);  -- Carlos gana el 1er lugar
 END;
 /
 
@@ -341,7 +333,4 @@ PRINT c_resultado;
 
 EXEC :c_resultado := PCK_CAJERO.consultar_saldo_usuario(22);  -- Balance de Juan Sanchez
 PRINT c_resultado;
-
-
-
 
