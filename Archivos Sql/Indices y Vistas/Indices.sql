@@ -37,11 +37,6 @@ ON CAMBIOFICHAS (cajarecibe);
 CREATE INDEX idx_torneos_estado 
 ON Torneos(estado);
 
--- Índice para consultar torneos por nombre (si haces búsquedas por nombre)
-CREATE UNIQUE INDEX idx_torneos_nombre 
-ON Torneos(nombre);
-
-
 -- Índice para consultar mesas por torneo
 CREATE INDEX idx_mesas_torneo 
 ON Mesas(torneo);

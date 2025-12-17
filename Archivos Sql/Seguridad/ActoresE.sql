@@ -62,14 +62,6 @@ CREATE OR REPLACE PACKAGE PCK_ADM_SISTEMA AS
 
     PROCEDURE eliminar_mesa(p_id IN Mesas.id%TYPE);
 
-    -- Usuarios Frecuentes y Beneficios
-    PROCEDURE actualizar_datos_usuario_frecuente(
-        p_id IN UsuariosFrecuentes.id%TYPE,
-        p_nombre_nuevo IN Usuarios.nombre%TYPE DEFAULT NULL,
-        p_correo_nuevo IN UsuariosFrecuentes.correo%TYPE DEFAULT NULL,
-        p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
-    );
-
     PROCEDURE crear_beneficio(
         p_requisito     IN Beneficios.requisito%TYPE,
         p_descripcion   IN Beneficios.descripcion%TYPE
@@ -80,10 +72,51 @@ CREATE OR REPLACE PACKAGE PCK_ADM_SISTEMA AS
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
     );
 
-    -- Eliminación Genérica
-    PROCEDURE eliminar_usuario(p_id IN Usuarios.id%TYPE);
 
     PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE);
+
+    --TORNEOS
+
+    PROCEDURE crear_torneo(
+        p_nombre        IN Torneos.nombre%TYPE,
+        p_fecha_inicio  IN Torneos.fecha_inicio%TYPE,
+        p_fecha_fin     IN Torneos.fecha_fin%TYPE,
+        p_estado        IN Torneos.estado%TYPE,
+        p_pozo_premios  IN Torneos.pozoDePremios%TYPE,
+        p_juego         IN Torneos.juego%TYPE,
+        p_jugadores     IN Torneos.jugadoresActuales%TYPE,
+        p_valor_entrada IN Torneos.valorEntrada%TYPE
+    );
+
+     -- Actualizar la información de un torneo
+    PROCEDURE actualizar_torneo(
+        p_id            IN Torneos.id%TYPE,
+        p_nombre        IN Torneos.nombre%TYPE DEFAULT NULL,
+        p_fecha_inicio  IN Torneos.fecha_inicio%TYPE DEFAULT NULL,
+        p_fecha_fin     IN Torneos.fecha_fin%TYPE DEFAULT NULL,
+        p_estado        IN Torneos.estado%TYPE DEFAULT NULL,
+        p_pozo_premios  IN Torneos.pozoDePremios%TYPE DEFAULT NULL,
+        p_juego         IN Torneos.juego%TYPE DEFAULT NULL,
+        p_jugadores     IN Torneos.jugadoresActuales%TYPE DEFAULT NULL,
+        p_valor_entrada IN Torneos.valorEntrada%TYPE DEFAULT NULL
+    );
+
+    -- Consultar un torneo por su ID
+    FUNCTION consultar_torneo(p_id IN Torneos.id%TYPE)
+        RETURN SYS_REFCURSOR;
+
+    -- Consultar todos los torneos activos
+    FUNCTION consultar_torneos_activos
+        RETURN SYS_REFCURSOR;
+
+    -- Procedimiento para cerrar un torneo (actualiza el estado y pozo de premios)
+    PROCEDURE cerrar_torneo(
+        p_torneo_id IN NUMBER -- ID del torneo
+    );
+
+    -- Eliminar un torneo
+    PROCEDURE eliminar_torneo(p_id IN Torneos.id%TYPE);
+
 END PCK_ADM_SISTEMA;
 
 /
@@ -119,6 +152,40 @@ CREATE OR REPLACE PACKAGE PCK_CAJERO AS
     -- Consultar saldo de un usuario
     FUNCTION consultar_saldo_usuario(p_usuario_id IN Usuarios.id%TYPE)
         RETURN Usuarios.balance%TYPE;
+
+
+    -- Eliminación Genérica
+    PROCEDURE eliminar_usuario(p_id IN Usuarios.id%TYPE);
+
+    -- Usuarios Frecuentes y Beneficios
+    PROCEDURE actualizar_datos_usuario_frecuente(
+        p_id IN UsuariosFrecuentes.id%TYPE,
+        p_nombre_nuevo IN Usuarios.nombre%TYPE DEFAULT NULL,
+        p_correo_nuevo IN UsuariosFrecuentes.correo%TYPE DEFAULT NULL,
+        p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
+    );
+
+    -- Procedimiento para registrar un nuevo jugador en un torneo
+    PROCEDURE registrar_participante(
+        p_torneo_id      IN NUMBER,     -- ID del torneo
+        p_usuario_id     IN NUMBER,     -- ID del usuario
+        p_estado         IN VARCHAR2    -- Estado (Inscrito, Eliminado)
+    );
+
+    -- Procedimiento para actualizar la participación de un jugador
+    PROCEDURE actualizar_participante(
+        p_participante_id IN NUMBER,    -- ID del participante
+        p_estado          IN VARCHAR2   -- Nuevo estado (Inscrito, Eliminado, etc.)
+    );
+
+    -- Procedimiento para actualizar los ganadores de un torneo
+    PROCEDURE actualizar_ganadores(
+        p_torneo_id       IN NUMBER,   -- ID del torneo
+        p_participante_id IN NUMBER,   -- ID del ganador
+        p_premio          IN VARCHAR2, -- Descripción del premio
+        p_monto           IN NUMBER    -- Monto del premio
+    );
+
 
 END PCK_CAJERO;
 /

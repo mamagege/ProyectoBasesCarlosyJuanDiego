@@ -52,9 +52,8 @@ ALTER TABLE Mesas ADD CONSTRAINT FK_Mesas_Torneos
 FOREIGN KEY (torneo) REFERENCES Torneos(id)
 ON DELETE SET NULL;
 
-
 ALTER TABLE Torneos ADD CONSTRAINT FK_Torneos_Juego 
-FOREIGN KEY (juego) REFERENCES JuegosTorneo(id);
+FOREIGN KEY (juego) REFERENCES Juegos(id);
 
 ALTER TABLE Participantes ADD CONSTRAINT FK_Participantes_Torneo 
 FOREIGN KEY (torneo) REFERENCES Torneos(id)

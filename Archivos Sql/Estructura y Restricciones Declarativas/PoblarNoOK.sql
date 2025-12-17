@@ -207,3 +207,8 @@ VALUES (100, 10000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Cancelada', 1, 1);
 INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
 VALUES (101, 15000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Pausada', 1, 1);
 
+--CICLO 2 POBLAR NO OK
+-- ============================================================
+
+
+

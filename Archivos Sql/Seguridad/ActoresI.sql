@@ -14,7 +14,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_especialidad  IN Dealers.especialidad%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.crear_dealer(p_nombre, p_turno, p_especialidad);
+        PCK_REGISTRAR_EMPLEADOS.crear_dealer(p_nombre, p_turno, p_especialidad);
     END crear_dealer;
 
     PROCEDURE crear_cajero(
@@ -24,7 +24,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_ventanilla    IN Cajeros.ventanilla%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.crear_cajero(p_nombre, p_turno, p_nivelAcceso, p_ventanilla);
+        PCK_REGISTRAR_EMPLEADOS.crear_cajero(p_nombre, p_turno, p_nivelAcceso, p_ventanilla);
     END crear_cajero;
 
     FUNCTION consultar_empleado(p_id IN Empleados.id%TYPE)
@@ -32,7 +32,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
     AS
         v_cursor SYS_REFCURSOR;
     BEGIN
-        v_cursor := PCK_MANTENIMIENTO.consultar_empleado(p_id);
+        v_cursor := PCK_MANTENER_EMPLEADOS.consultar_empleado(p_id);
         RETURN v_cursor;
     END consultar_empleado;
 
@@ -42,7 +42,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
     AS
         v_cursor SYS_REFCURSOR;
     BEGIN
-        v_cursor := PCK_MANTENIMIENTO.consultar_usuario(p_id);
+        v_cursor := PCK_MANTENER_USUARIOS.consultar_usuario(p_id);
         RETURN v_cursor;
     END consultar_usuario;
 
@@ -52,12 +52,12 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_turno         IN Empleados.turno%TYPE DEFAULT NULL
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.actualizar_empleado(p_id, p_nombre, p_turno);
+        PCK_MANTENER_EMPLEADOS.actualizar_empleado(p_id, p_nombre, p_turno);
     END actualizar_empleado;
 
     PROCEDURE eliminar_empleado(p_id IN Empleados.id%TYPE) AS
     BEGIN
-        PCK_MANTENIMIENTO.eliminar_empleado(p_id);
+        PCK_MANTENER_EMPLEADOS.eliminar_empleado(p_id);
     END eliminar_empleado;
 
     -- Juegos
@@ -68,7 +68,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_maxApuesta    IN Juegos.maxApuesta%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.crear_juego(p_nombre, p_maxJugadores, p_minApuesta, p_maxApuesta);
+        PCK_REGISTRAR_ESTABLECIMIENTO.crear_juego(p_nombre, p_maxJugadores, p_minApuesta, p_maxApuesta);
     END crear_juego;
 
     PROCEDURE actualizar_juego(
@@ -79,12 +79,12 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_maxApuesta    IN Juegos.maxApuesta%TYPE DEFAULT NULL
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.actualizar_juego(p_id, p_nombre, p_maxJugadores, p_minApuesta, p_maxApuesta);
+        PCK_MANTENER_ESTABLECIMIENTO.actualizar_juego(p_id, p_nombre, p_maxJugadores, p_minApuesta, p_maxApuesta);
     END actualizar_juego;
 
     PROCEDURE eliminar_juego(p_id IN Juegos.id%TYPE) AS
     BEGIN
-        PCK_MANTENIMIENTO.eliminar_juego(p_id);
+        PCK_MANTENER_ESTABLECIMIENTO.eliminar_juego(p_id);
     END eliminar_juego;
 
     -- Mesas
@@ -95,12 +95,12 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_dealer_id     IN Mesas.dealer%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.crear_mesa(p_numeroMesa, p_estado, p_juego_id, p_dealer_id);
+        PCK_REGISTRAR_ESTABLECIMIENTO.crear_mesa(p_numeroMesa, p_estado, p_juego_id, p_dealer_id);
     END crear_mesa;
 
     PROCEDURE eliminar_mesa(p_id IN Mesas.id%TYPE) AS
     BEGIN
-        PCK_MANTENIMIENTO.eliminar_mesa(p_id);
+        PCK_MANTENER_ESTABLECIMIENTO.eliminar_mesa(p_id);
     END eliminar_mesa;
 
     -- Usuarios Frecuentes y Beneficios
@@ -111,7 +111,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.actualizar_datos_usuario_frecuente(p_id, p_nombre_nuevo, p_correo_nuevo, p_celular_nuevo);
+        PCK_MANTENER_USUARIOS.actualizar_datos_usuario_frecuente(p_id, p_nombre_nuevo, p_correo_nuevo, p_celular_nuevo);
     END actualizar_datos_usuario_frecuente;
 
     PROCEDURE crear_beneficio(
@@ -119,13 +119,13 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_descripcion   IN Beneficios.descripcion%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.crear_beneficio(p_requisito, p_descripcion);
+        PCK_REGISTRAR_USUARIOS.crear_beneficio(p_requisito, p_descripcion);
     END crear_beneficio;
 
 
     PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE) AS
     BEGIN
-        PCK_MANTENIMIENTO.eliminar_beneficio(p_id);
+        PCK_MANTENER_USUARIOS.eliminar_beneficio(p_id);
     END eliminar_beneficio; 
 
     
@@ -134,14 +134,98 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.asignar_beneficio_a_frecuente(p_beneficio_id, p_usuario_id);
+        PCK_MANTENER_USUARIOS.asignar_beneficio_a_frecuente(p_beneficio_id, p_usuario_id);
     END asignar_beneficio_a_frecuente;
 
     -- Eliminación Genérica
     PROCEDURE eliminar_usuario(p_id IN Usuarios.id%TYPE) AS
     BEGIN
-        PCK_MANTENIMIENTO.eliminar_usuario(p_id);
+        PCK_MANTENER_USUARIOS.eliminar_usuario(p_id);
     END eliminar_usuario;
+
+    PROCEDURE crear_torneo(
+        p_nombre        IN Torneos.nombre%TYPE,
+        p_fecha_inicio  IN Torneos.fecha_inicio%TYPE,
+        p_fecha_fin     IN Torneos.fecha_fin%TYPE,
+        p_estado        IN Torneos.estado%TYPE,
+        p_pozo_premios  IN Torneos.pozoDePremios%TYPE,
+        p_juego         IN Torneos.juego%TYPE,
+        p_jugadores     IN Torneos.jugadoresActuales%TYPE,
+        p_valor_entrada IN Torneos.valorEntrada%TYPE 
+    ) AS 
+    BEGIN 
+        PCK.PCK_REGISTRAR_ESTABLECIMIENTO.crear_torneo(
+            p_nombre,
+            p_fecha_inicio,
+            p_fecha_fin,
+            p_estado,
+            p_pozo_premios,
+            p_juego,
+            p_jugadores,
+            p_valor_entrada
+        );
+    END crear_torneo;
+
+     -- Actualizar la información de un torneo
+    PROCEDURE actualizar_torneo(
+        p_id            IN Torneos.id%TYPE,
+        p_nombre        IN Torneos.nombre%TYPE DEFAULT NULL,
+        p_fecha_inicio  IN Torneos.fecha_inicio%TYPE DEFAULT NULL,
+        p_fecha_fin     IN Torneos.fecha_fin%TYPE DEFAULT NULL,
+        p_estado        IN Torneos.estado%TYPE DEFAULT NULL,
+        p_pozo_premios  IN Torneos.pozoDePremios%TYPE DEFAULT NULL,
+        p_juego         IN Torneos.juego%TYPE DEFAULT NULL,
+        p_jugadores     IN Torneos.jugadoresActuales%TYPE DEFAULT NULL,
+        p_valor_entrada IN Torneos.valorEntrada%TYPE DEFAULT NULL
+    ) AS 
+    BEGIN 
+        PCK.MANTENER_ESTABLECIMIENTO.actualizar_torneo(
+            p_id,
+            p_nombre,
+            p_fecha_inicio,
+            p_fecha_fin,
+            p_estado,
+            p_pozo_premios,
+            p_juego,
+            p_jugadores,
+            p_valor_entrada
+        );
+    END actualizar_torneo;
+
+
+    -- Consultar un torneo por su ID
+    FUNCTION consultar_torneo(p_id IN Torneos.id%TYPE)
+        RETURN SYS_REFCURSOR
+    AS
+        v_cursor SYS_REFCURSOR;
+    BEGIN
+        v_cursor := PCK_MANTENER_ESTABLECIMIENTO.consultar_torneo(p_id);
+        RETURN v_cursor;
+    END consultar_torneo;
+
+    -- Consultar todos los torneos activos
+    FUNCTION consultar_torneos_activos
+        RETURN SYS_REFCURSOR 
+    AS 
+        v_cursor SYS_REFCURSOR;
+    BEGIN
+        v_cursor := PCK_MANTENER_ESTABLECIMIENTO.consultar_torneos_activos();
+        RETURN v_cursor;
+    END consultar_torneos_activos;
+
+    -- Procedimiento para cerrar un torneo (actualiza el estado y pozo de premios)
+    PROCEDURE cerrar_torneo(
+        p_torneo_id IN NUMBER -- ID del torneo
+    ) AS
+    BEGIN
+        PCK_MANTENER_ESTABLECIMIENTO.cerrar_torneo(p_torneo_id);
+    END cerrar_torneo;
+
+    -- Eliminar un torneo
+    PROCEDURE eliminar_torneo(p_id IN Torneos.id%TYPE) AS 
+    BEGIN 
+        PCK_MANTENER_ESTABLECIMIENTO.eliminar_torneo(p_id);
+    END eliminar_torneo;
 
 END PCK_ADM_SISTEMA;
 /
@@ -158,7 +242,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
     ) AS
     BEGIN
         -- Se asume un balance inicial de 0
-        PCK_MANTENIMIENTO.crear_usuario_invitado(p_nombre, 0);
+        PCK_MANTENER_USUARIOS.crear_usuario_invitado(p_nombre, 0);
     END registrar_nuevo_invitado;
 
     -- Registrar transacción de fichas (Compra/Venta)
@@ -169,7 +253,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
         p_cajaRecibe    IN CambioFichas.cajaRecibe%TYPE
     ) AS
     BEGIN
-        PCK_TRANSACCIONES.registrar_cambio_fichas(p_monto, p_usuario_id, p_cajero_id, p_cajaRecibe);
+        PCK_REGISTRAR_TRANSACCIONES.registrar_cambio_fichas(p_monto, p_usuario_id, p_cajero_id, p_cajaRecibe);
     END registrar_cambio_fichas;
 
     -- Consultar transacciones de su turno
@@ -181,7 +265,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
     AS
         v_cursor SYS_REFCURSOR;
     BEGIN
-        v_cursor := PCK_TRANSACCIONES.consultar_transacciones_cajero(p_cajero_id, p_turno);
+        v_cursor := PCK_MANTENER_TRANSACCIONES.consultar_transacciones_cajero(p_cajero_id, p_turno);
         RETURN v_cursor;
     END consultar_transacciones_turno;
 
@@ -191,16 +275,48 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
     AS
         v_balance Usuarios.balance%TYPE;
     BEGIN
-        v_balance := PCK_USUARIOS_FUNC.consultar_saldo(p_usuario_id);
+        v_balance := PCK_MANTENER_USUARIOS.consultar_saldo(p_usuario_id);
         RETURN v_balance;
     END consultar_saldo_usuario;
 
     -- Registrar la visita de un usuario invitado
     PROCEDURE registrar_visita_usuario(p_usuario_id IN Usuarios.id%TYPE) AS
     BEGIN
-        PCK_MANTENIMIENTO.registrar_visita(p_usuario_id);
+        PCK_MANTENER_USUARIOS.registrar_visita(p_usuario_id);
     END registrar_visita_usuario;
 
+
+    -- Procedimiento para registrar un nuevo jugador en un torneo
+    PROCEDURE registrar_participante(
+        p_torneo_id      IN NUMBER,     -- ID del torneo
+        p_usuario_id     IN NUMBER,     -- ID del usuario
+        p_estado         IN VARCHAR2    -- Estado (Inscrito, Eliminado)
+    ) AS 
+    BEGIN
+        PCK_MANTENER_USUARIOS.registrar_participante(p_torneo_id, p_usuario_id, p_estado);
+    END registrar_participante;
+
+    -- Procedimiento para actualizar la participación de un jugador
+    PROCEDURE actualizar_participante(
+        p_participante_id IN NUMBER,    -- ID del participante
+        p_estado          IN VARCHAR2   -- Nuevo estado (Inscrito, Eliminado, etc.)
+    ) AS 
+    BEGIN
+        PCK_MANTENER_USUARIOS.actualizar_participante(p_participante_id, p_estado);
+    END actualizar_participante;
+
+    -- Procedimiento para actualizar los ganadores de un torneo
+    PROCEDURE actualizar_ganadores(
+        p_torneo_id       IN NUMBER,   -- ID del torneo
+        p_participante_id IN NUMBER,   -- ID del ganador
+        p_premio          IN VARCHAR2, -- Descripción del premio
+        p_monto           IN NUMBER    -- Monto del premio
+    ) AS 
+    BEGIN
+        PCK_MANTENER_USUARIOS.actualizar_ganadores(p_torneo_id, p_participante_id, p_premio, p_monto);
+    END actualizar_ganadores
+    
+    ;
 END PCK_CAJERO;
 /
 
@@ -218,7 +334,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_DEALER AS
 
     ) AS
     BEGIN
-        PCK_APUESTAS.registrar_apuesta(p_monto, p_usuario_id, p_mesa_id);
+        PCK_REGISTRAR_APUESTAS.registrar_apuesta(p_monto, p_usuario_id, p_mesa_id);
     END registrar_apuesta;
 
     -- Finalizar la apuesta (Ganada/Perdida)
@@ -227,7 +343,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_DEALER AS
         p_nuevo_estado  IN Apuestas.estado%TYPE
     ) AS
     BEGIN
-        PCK_APUESTAS.finalizar_apuesta(p_id, p_nuevo_estado);
+        PCK_MANTENER_APUESTAS.finalizar_apuesta(p_id, p_nuevo_estado);
     END finalizar_apuesta;
 
     -- Marcar la mesa como Abierta/Cerrada/Mantenimiento
@@ -236,7 +352,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_DEALER AS
         p_nuevo_estado  IN Mesas.estado%TYPE
     ) AS
     BEGIN
-        PCK_MANTENIMIENTO.actualizar_mesa_estado(p_id, p_nuevo_estado);
+        PCK_MANTENER_ESTABLECIMIENTO.actualizar_mesa_estado(p_id, p_nuevo_estado);
     END actualizar_estado_mesa;
 
 END PCK_DEALER;
@@ -255,7 +371,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_USUARIO AS
         v_balance Usuarios.balance%TYPE;
     BEGIN
         -- **Aquí se implementaría la validación de seguridad (ej: p_usuario_id debe ser el ID de la sesión)**
-        v_balance := PCK_USUARIOS_FUNC.consultar_saldo(p_usuario_id);
+        v_balance := PCK_MANTENER_USUARIOS.consultar_saldo(p_usuario_id);
         RETURN v_balance;
     END consultar_mi_saldo;
 
@@ -266,7 +382,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_USUARIO AS
         v_cursor SYS_REFCURSOR;
     BEGIN
         -- **Aquí se implementaría la validación de seguridad (ej: p_usuario_id debe ser el ID de la sesión)**
-        v_cursor := PCK_USUARIOS_FUNC.consultar_historial_usuario(p_usuario_id);
+        v_cursor := PCK_MANTENER_USUARIOS.consultar_historial_usuario(p_usuario_id);
         RETURN v_cursor;
     END consultar_mi_historial_apuestas;
 

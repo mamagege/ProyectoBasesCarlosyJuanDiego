@@ -147,7 +147,9 @@ BEGIN
 END;
 /
 
+--CICLO 2---
 
+--Registro: Al registrar un nuevo participante en un torneo, se debe actualizar el número de jugadores actuales y el pozo de premios del torneo.
 CREATE OR REPLACE TRIGGER trg_actualizar_participantesYPozo
 AFTER INSERT ON Participantes
 FOR EACH ROW
@@ -181,8 +183,6 @@ BEGIN
     COMMIT;
 END;
 /
-
-
 
 --------------------------------------------------------------------------------
 -- TRIGGER: Un usuario No se puede registrar en un torneo que no esté activo

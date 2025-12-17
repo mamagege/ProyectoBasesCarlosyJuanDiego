@@ -42,3 +42,9 @@ SELECT Dealers.id, Empleados.nombre, COUNT(apuestas.estado) AS TOTAL_PERDIDOS FR
 JOIN APUESTAS ON apuestas.id = dealers.id 
 JOIN EMPLEADOS ON empleados.id = dealers.id
 GROUP BY Dealers.id, Empleados.nombre;
+
+--CICLO 2
+
+
+--Consultas con torneos y premios
+

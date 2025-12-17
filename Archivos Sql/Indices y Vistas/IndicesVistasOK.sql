@@ -42,6 +42,11 @@ JOIN Usuarios u ON cf.usuario = u.id
 GROUP BY u.nombre
 ORDER BY total_transacciones DESC;
 
+--CICLO 2
+
+
+
+
 
 
 

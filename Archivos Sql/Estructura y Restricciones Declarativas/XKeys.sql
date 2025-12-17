@@ -53,6 +53,7 @@ ALTER TABLE Mesas DROP CONSTRAINT FK_Mesas_Dealer;
 ALTER TABLE Mesas DROP CONSTRAINT PK_Mesas;
 ALTER TABLE Mesas DROP CONSTRAINT ck_TestadoMesa;
 
+
 -- --- TABLA: Apuestas
 ALTER TABLE Apuestas DROP CONSTRAINT FK_Apuestas_Usuario;
 ALTER TABLE Apuestas DROP CONSTRAINT FK_Apuestas_Mesa;
@@ -61,3 +62,30 @@ ALTER TABLE Apuestas DROP CONSTRAINT ck_TestadoApuesta;
 
 -- --- TABLA: Usuarios
 ALTER TABLE Usuarios DROP CONSTRAINT PK_Usuarios;
+
+------ TABLAS CICLO 2 ------
+
+-- --- TABLA: Torneos
+ALTER TABLE Torneos DROP CONSTRAINT FK_Torneos_Juego;
+ALTER TABLE Torneos DROP CONSTRAINT UQ_Torneos_nombre;
+ALTER TABLE Torneos DROP CONSTRAINT PK_Torneos;
+ALTER TABLE Torneos DROP CONSTRAINT ck_FechaTorneo;
+ALTER TABLE Torneos DROP CONSTRAINT ck_TestadoTorneo;
+
+-- --- TABLA: Participantes
+ALTER TABLE Participantes DROP CONSTRAINT FK_Participante_Torneo;
+ALTER TABLE Participantes DROP CONSTRAINT FK_Participantes_Usuario;
+ALTER TABLE Participantes DROP CONSTRAINT PK_Participantes;
+
+-- --- TABLA: Premios
+ALTER TABLE Premios DROP CONSTRAINT FK_Premios_Torneo;
+ALTER TABLE Premios DROP CONSTRAINT FK_Premios_Participante;
+ALTER TABLE Premios DROP CONSTRAINT PK_Premios;
+ALTER TABLE Premios DROP CONSTRAINT ck_TestadoPremio;
+
+-- --- TABLA: Mesas (Ciclo 2)
+
+ALTER TABLE Mesas DROP CONSTRAINT FK_Mesas_Torneos;
+-- ============================================================
+
+

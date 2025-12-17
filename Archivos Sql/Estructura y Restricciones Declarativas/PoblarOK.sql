@@ -202,7 +202,7 @@ INSERT INTO Apuestas (monto, fechaHora, estado, usuario, mesa)
 VALUES (30000, TO_DATE('2025-10-28 21:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 8, 8);
 
 
---CICLO 2
+--CICLO 2  --CORREGIR POBLAR OK
 
 -- ============================================================
 -- 13. Torneos
