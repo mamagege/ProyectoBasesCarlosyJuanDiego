@@ -22,10 +22,6 @@ ON APUESTAS (mesa);
 CREATE INDEX idx_cambiofichas_usuario
 ON CAMBIOFICHAS (usuario);
 
---El correo identifica el usuarios frecuente, asi pues será más rápido.
-CREATE UNIQUE INDEX idx_usuariofrecuente_correo
-ON USUARIOSFRECUENTES (correo);
-
 --Para que los dealers verifiquen el juego correspondiente a la mesa
 CREATE INDEX idx_mesa_juego
 ON MESAS (juego);

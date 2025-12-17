@@ -1,9 +1,8 @@
--- CRUDE.sql: Especificación de Paquetes CRUD
+-- CRUDE: Especificación de Paquetes CRUD
 
--- ==========================================================
+-- ============================================================
 -- 1. PCK_EXCEPCIONES: Definición de Excepciones Personalizadas
--- (No requiere cambios)
--- ==========================================================
+-- ============================================================
 CREATE OR REPLACE PACKAGE PCK_EXCEPCIONES AS
     -- ORA-20101: El ID ya existe (para UPDATEs/DELETEs con registros no existentes)
     e_id_existe EXCEPTION;
@@ -31,32 +30,35 @@ CREATE OR REPLACE PACKAGE PCK_EXCEPCIONES AS
     
 END PCK_EXCEPCIONES;
 /
+-- ==========================================================
+-- 2. PCK_EMPLEADOS: CRUD para Registrar y Mantener empleados
+-- ==========================================================
 
--- ==========================================================
--- 2. PCK_MANTENIMIENTO: CRUD para Tablas Maestras
--- ==========================================================
-CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
+CREATE OR REPLACE PACKAGE PCK_REGISTRAR_EMPLEADOS AS
 
     -- -------------------------
     -- 2.1 EMPLEADOS (CREATE)
     -- -------------------------
     PROCEDURE crear_dealer(
-        -- p_id se elimina. El ID se generará automáticamente.
         p_nombre        IN Empleados.nombre%TYPE,
         p_turno         IN Empleados.turno%TYPE,
         p_especialidad  IN Dealers.especialidad%TYPE
     );
     
     PROCEDURE crear_cajero(
-        -- p_id se elimina. El ID se generará automáticamente.
         p_nombre        IN Empleados.nombre%TYPE,
         p_turno         IN Empleados.turno%TYPE,
         p_nivelAcceso   IN Cajeros.nivelAcceso%TYPE,
         p_ventanilla    IN Cajeros.ventanilla%TYPE
     );
 
+END PCK_REGISTRAR_EMPLEADOS;
+/
+
+CREATE OR REPLACE PACKAGE PCK_MANTENER_EMPLEADOS AS
+
     -- -------------------------
-    -- 2.2 EMPLEADOS (READ, UPDATE, DELETE)
+    -- 2.1 EMPLEADOS (READ, UPDATE, DELETE)
     -- -------------------------
     FUNCTION consultar_empleado(p_id IN Empleados.id%TYPE)
         RETURN SYS_REFCURSOR;
@@ -69,20 +71,44 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
 
     PROCEDURE eliminar_empleado(p_id IN Empleados.id%TYPE);
     
-    -- -------------------------
-    -- 2.3 JUEGOS (CREATE)
-    -- -------------------------
+END PCK_MANTENER_EMPLEADOS;
+/
+-- ===============================================================================
+-- 3. PCK_ESTABLECIMIENTO: CRUD para Registrar y Mantener: Juegos, Mesas y Torneos 
+-- ===============================================================================
+
+CREATE OR REPLACE PACKAGE REGISTRAR_ESTABLECIMIENTO AS
+
+    -------------------------
+    -- 3.1 JUEGOS (CREATE)
+    -- ----------------------
     PROCEDURE crear_juego(
-        -- p_id se elimina. El ID se generará automáticamente.
         p_nombre        IN Juegos.nombre%TYPE,
         p_maxJugadores  IN Juegos.maxJugadores%TYPE,
         p_minApuesta    IN Juegos.minApuesta%TYPE,
         p_maxApuesta    IN Juegos.maxApuesta%TYPE
     );
     
-    -- -------------------------
-    -- 2.4 JUEGOS (READ, UPDATE, DELETE)
-    -- -------------------------
+    -- -------------------
+    -- 3.2 MESAS (CREATE)
+    -- -------------------
+    PROCEDURE crear_mesa(
+        p_numeroMesa    IN Mesas.numeroMesa%TYPE,
+        p_estado        IN Mesas.estado%TYPE,
+        p_juego_id      IN Mesas.juego%TYPE,
+        p_dealer_id     IN Mesas.dealer%TYPE
+    );
+
+    
+
+END REGISTRAR_ESTABLECIMIENTO;
+/
+
+CREATE OR REPLACE PACKAGE PCK_MANTENER_ESTABLECIMIENTOS AS
+
+    ------------------------------------
+    -- 3.1 JUEGOS (READ, UPDATE, DELETE)
+    ------------------------------------
     FUNCTION consultar_juego(p_id IN Juegos.id%TYPE)
         RETURN SYS_REFCURSOR;
     
@@ -96,20 +122,10 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
     
     PROCEDURE eliminar_juego(p_id IN Juegos.id%TYPE);
 
-    -- -------------------------
-    -- 2.5 MESAS (CREATE)
-    -- -------------------------
-    PROCEDURE crear_mesa(
-        -- p_id se elimina. El ID se generará automáticamente.
-        p_numeroMesa    IN Mesas.numeroMesa%TYPE,
-        p_estado        IN Mesas.estado%TYPE,
-        p_juego_id      IN Mesas.juego%TYPE,
-        p_dealer_id     IN Mesas.dealer%TYPE
-    );
-
-    -- -------------------------
-    -- 2.6 MESAS (READ, UPDATE, DELETE)
-    -- -------------------------
+    
+    -----------------------------------
+    -- 3.2 MESAS (READ, UPDATE, DELETE)
+    -----------------------------------
     FUNCTION consultar_mesa(p_id IN Mesas.id%TYPE)
         RETURN SYS_REFCURSOR;
 
@@ -120,64 +136,95 @@ CREATE OR REPLACE PACKAGE PCK_MANTENIMIENTO AS
 
     PROCEDURE eliminar_mesa(p_id IN Mesas.id%TYPE);
 
-    -- -------------------------
-    -- 2.7 USUARIOS (CREATE)
-    -- -------------------------
+    
+
+END PCK_MANTENER_ESTABLECIMIENTOS;
+/
+
+-- =============================================================
+-- 4. PCK_USUARIOS: CRUD de Manejo de Usuarios y sus Beneficios
+-- =============================================================
+
+CREATE OR REPLACE PACKAGE PCK_REGISTRAR_USUARIOS AS
+
+    ------------------------
+    -- 4.1 USUARIOS (CREATE)
+    ------------------------
+
+    PROCEDURE crear_usuario_invitado(
+        p_nombre        IN Usuarios.nombre%TYPE,
+        p_balance       IN Usuarios.balance%TYPE
+    );
+
+    -- ------------------------
+    -- 4.2 BENEFICIOS (CREATE)
+    -- ------------------------
+    PROCEDURE crear_beneficio(
+        p_requisito     IN Beneficios.requisito%TYPE,
+        p_descripcion   IN Beneficios.descripcion%TYPE
+    );
+
+
+
+
+END PCK_REGISTRAR_USUARIOS;
+
+
+
+/
+
+CREATE OR REPLACE PACKAGE PCK_MANTENER_USUARIOS AS
+
+    ----------------------------------------
+    -- 4.1 USUARIOS (READ, UPDATE, DELETE)
+    ----------------------------------------
+
     PROCEDURE actualizar_datos_usuario_frecuente(
-        -- p_id se elimina. El ID se generará automáticamente.
         p_id IN UsuariosFrecuentes.id%TYPE,
         p_nombre_nuevo IN Usuarios.nombre%TYPE DEFAULT NULL,
         p_correo_nuevo IN UsuariosFrecuentes.correo%TYPE DEFAULT NULL,
         p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
     );
 
-    PROCEDURE crear_usuario_invitado(
-        -- p_id se elimina. El ID se generará automáticamente.
-        p_nombre        IN Usuarios.nombre%TYPE,
-        p_balance       IN Usuarios.balance%TYPE
-    );
 
     PROCEDURE registrar_visita(p_usuario_id IN Usuarios.id%TYPE);
 
     FUNCTION consultar_usuario(p_id IN Usuarios.id%TYPE)
         RETURN SYS_REFCURSOR;
 
-
-    -- -------------------------
-    -- 2.8 USUARIOS (DELETE)
-    -- -------------------------
     PROCEDURE eliminar_usuario(p_id IN Usuarios.id%TYPE);
 
-    -- -------------------------
-    -- 2.9 BENEFICIOS (CREATE, MANTENIMIENTO)
-    -- -------------------------
-    PROCEDURE crear_beneficio(
-        -- p_id se elimina. El ID se generará automáticamente.
-        p_requisito     IN Beneficios.requisito%TYPE,
-        p_descripcion   IN Beneficios.descripcion%TYPE
-    );
+
+    FUNCTION consultar_saldo(p_usuario_id IN Usuarios.id%TYPE)
+        RETURN Usuarios.balance%TYPE;
+
+    FUNCTION consultar_historial_usuario(p_usuario_id IN Usuarios.id%TYPE)
+        RETURN SYS_REFCURSOR;
+
+    -----------------------------------------
+    -- 4.2 BENEFICIOS (READ, UPDATE, DELETE)
+    -----------------------------------------
 
     PROCEDURE asignar_beneficio_a_frecuente(
         p_beneficio_id  IN Beneficios.id%TYPE,
         p_usuario_id    IN UsuariosFrecuentes.id%TYPE
     );
 
-
     PROCEDURE eliminar_beneficio(p_id IN Beneficios.id%TYPE);
     
-
-END PCK_MANTENIMIENTO;
+END PCK_MANTENER_USUARIOS;
 /
 
+-- ============================================
+-- 5. PCK_APUESTAS: CRUD de Manejo de Apuestas
+-- ============================================
 
--- ==========================================================
--- 3. PCK_APUESTAS: CRUD y Flujo de Apuestas
--- (Se elimina p_id de registrar_apuesta)
--- ==========================================================
-CREATE OR REPLACE PACKAGE PCK_APUESTAS AS
+
+CREATE OR REPLACE PACKAGE PCK_REGISTRAR_APUESTAS AS
+
 
     -- -------------------------
-    -- 3.1 APUESTAS (CREATE)
+    -- 5.1 APUESTAS (CREATE)
     -- -------------------------
     PROCEDURE registrar_apuesta(
         -- p_id se elimina. El ID se generará automáticamente.
@@ -186,29 +233,33 @@ CREATE OR REPLACE PACKAGE PCK_APUESTAS AS
         p_mesa_id       IN Apuestas.mesa%TYPE
     );
 
-    -- -------------------------
-    -- 3.2 APUESTAS (UPDATE, READ)
-    -- -------------------------
+
+
+END PCK_REGISTRAR_APUESTAS;
+/
+
+CREATE OR REPLACE PACKAGE PCK_MANTENER_APUESTAS AS
+
+    ------------------------------
+    -- 5.1 APUESTAS (UPDATE, READ)
+    ------------------------------
     PROCEDURE finalizar_apuesta(
         p_id            IN Apuestas.id%TYPE,
         p_nuevo_estado  IN Apuestas.estado%TYPE
     );
 
-    FUNCTION consultar_historial_usuario(p_usuario_id IN Usuarios.id%TYPE)
-        RETURN SYS_REFCURSOR;
         
 END PCK_APUESTAS;
 /
 
 
--- ==========================================================
--- 4. PCK_TRANSACCIONES: CRUD y Flujo de Transacciones
--- (Se elimina p_id de registrar_cambio_fichas)
--- ==========================================================
-CREATE OR REPLACE PACKAGE PCK_TRANSACCIONES AS
+-- ======================================================================
+-- 6. PCK_REGISTRAR_TRANSACCIONES: CRUD y Flujo de Transacciones de Caja
+-- ======================================================================
+CREATE OR REPLACE PACKAGE PCK_REGISTRAR_TRANSACCIONES AS
 
     -- -------------------------
-    -- 4.1 CAMBIO FICHAS (CREATE)
+    -- 6.1 CAMBIO FICHAS (CREATE)
     -- -------------------------
     PROCEDURE registrar_cambio_fichas(
         -- p_id se elimina. El ID se generará automáticamente.
@@ -218,8 +269,16 @@ CREATE OR REPLACE PACKAGE PCK_TRANSACCIONES AS
         p_cajaRecibe    IN CambioFichas.cajaRecibe%TYPE -- 'Dinero' o 'Fichas'
     );
 
+
+
+END PCK_REGISTRAR_TRANSACCIONES;
+/
+
+CREATE OR REPLACE PACKAGE PCK_MANTENER_TRANSACCIONES AS
+
+
     -- -------------------------
-    -- 4.2 CAMBIO FICHAS (READ, DELETE)
+    -- 6.1 CAMBIO FICHAS (READ, DELETE)
     -- -------------------------
     FUNCTION consultar_transacciones_cajero(
         p_cajero_id     IN Cajeros.id%TYPE,
@@ -229,23 +288,8 @@ CREATE OR REPLACE PACKAGE PCK_TRANSACCIONES AS
 
     PROCEDURE eliminar_transaccion(p_id IN CambioFichas.id%TYPE);
 
-END PCK_TRANSACCIONES;
+END PCK_MANTENER_TRANSACCIONES;
 /
 
 
--- ==========================================================
--- 5. PCK_USUARIOS_FUNC: Funciones de Usuario (READ/Logic)
--- (No requiere cambios en la interfaz)
--- ==========================================================
-CREATE OR REPLACE PACKAGE PCK_USUARIOS_FUNC AS
 
-    FUNCTION consultar_saldo(p_usuario_id IN Usuarios.id%TYPE)
-        RETURN Usuarios.balance%TYPE;
-
-    FUNCTION consultar_historial_usuario(p_usuario_id IN Usuarios.id%TYPE)
-        RETURN SYS_REFCURSOR;
-        
-    
-        
-END PCK_USUARIOS_FUNC;
-/

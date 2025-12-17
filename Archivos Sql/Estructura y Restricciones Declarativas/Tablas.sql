@@ -118,7 +118,7 @@ CREATE TABLE Torneos (
     estado VARCHAR2(20) NOT NULL,  -- Activo, Finalizado, Cancelado
     valorEntrada NUMBER(20) NOT NULL,
     pozoDePremios NUMBER(20) NOT NULL,  -- Total de premios
-    juego NUMBER(10) NOT NULL,  -- FK a Juegos
+    juego NUMBER(10) NOT NULL -- FK a Juegos
 );
 
 
@@ -131,7 +131,7 @@ CREATE TABLE Premios (
     participante NUMBER(10) NOT NULL,  -- FK a Participantes
     premio VARCHAR2(200) NOT NULL,  -- Descripción del premio
     monto NUMBER(20),
-    estado VARCHAR2(20) NOT NULL,  -- Asignado, Entregado
+    estado VARCHAR2(20) NOT NULL  -- Asignado, Entregado
 );
 
 CREATE TABLE Participantes (
@@ -142,5 +142,5 @@ CREATE TABLE Participantes (
     torneo NUMBER(10) NOT NULL,  -- FK a Torneos
     usuario NUMBER(10) NOT NULL,  -- FK a Usuarios
     fecha_registro DATE DEFAULT SYSDATE,
-    estado VARCHAR2(20) NOT NULL,  -- Inscrito, Eliminado
+    estado VARCHAR2(20) NOT NULL  -- Inscrito, Eliminado
 );
