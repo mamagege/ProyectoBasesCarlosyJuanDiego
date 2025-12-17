@@ -37,12 +37,12 @@ BEGIN
         UPDATE Usuarios
         SET balance = balance - :NEW.monto
         WHERE id = :NEW.usuario;
-    ELSIF :NEW.cajaRecibe = 'Fichas' THEN
+    ELSIF :NEW.cajaRecibe IN ('Fichas', 'Cheque') THEN
         UPDATE Usuarios
         SET balance = balance + :NEW.monto
         WHERE id = :NEW.usuario;
     ELSE
-        RAISE_APPLICATION_ERROR(-20003, 'Valor inválido en cajaRecibe. Debe ser Dinero o Fichas.');
+        RAISE_APPLICATION_ERROR(-20003, 'Valor inválido en cajaRecibe. Debe ser Dinero Fichas o Cheque.');
     END IF;
 END;
 /
@@ -214,5 +214,4 @@ BEGIN
     UPDATE Torneos
     SET estado = 'Finalizado'
     WHERE id = :NEW.torneo;
-    COMMIT;
 END;

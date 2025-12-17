@@ -4,7 +4,7 @@
 --Es relevante pues los usuarios constantemente están revisando su historial.
 
 CREATE INDEX idx_apuesta_usuario
-ON APUESTA (usuario);
+ON APUESTAS (usuario);
 
 --Se usa para que los cajeros puedan revisar con más velocidad el historial de sus transacciones.
 CREATE INDEX idx_cambiofichas_cajero

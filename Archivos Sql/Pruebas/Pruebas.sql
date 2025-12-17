@@ -242,6 +242,105 @@ ORDER BY total_transacciones DESC;
 
 
 -- ==========================================================
+--Prueba de aceptacion CICLO 2
+--Carlos Gaitan y Juan Sanchez estan aburridos en vacaciones de la universidad y trabajaron la semana anterior, entonces tienen dinero
+--Deciden ir a apostar jugando poker en el casino Luckia, ubicado en la calle 85.
+--Ambos se registran y compran fichas. Se dan cuenta que as mesas para apostar estan llenas asi que deciden inscribirse a un torneo
+
+
+--Como no habian venido antes, el cajero los registra y registra su visita
+
+-- 1. Creación de usuarios para Carlos Gaitan y Juan Sanchez
+BEGIN
+    -- Registro de Carlos Gaitan como invitado
+    PCK_CAJERO.registrar_nuevo_invitado('Carlos Gaitan');
+    -- Registro de Juan Sanchez como invitado
+    PCK_CAJERO.registrar_nuevo_invitado('Juan Sanchez');
+END;
+/
+-- 2. Registro de las visitas de los usuarios
+BEGIN
+    PCK_CAJERO.registrar_visita_usuario(21);  -- Carlos Gaitan
+    PCK_CAJERO.registrar_visita_usuario(22);  -- Juan Sanchez
+END;
+/
+
+
+-- Ambos amigos deciden gastar 100,000 en fichas que es el valor de la entrada al torneo
+
+-- 3. Compra de fichas para los usuarios
+
+BEGIN
+    PCK_CAJERO.registrar_cambio_fichas(500000, 21, 1, 'Dinero');  -- Carlos Gaitan
+    PCK_CAJERO.registrar_cambio_fichas(500000, 22, 1, 'Dinero');  -- Juan Sanchez
+END;
+/
+
+-- 4. Creación de torneo de poker
+BEGIN
+    PCK_ADM_SISTEMA.crear_torneo(
+        p_nombre => 'Torneo de Poker',
+        p_fecha_inicio => TO_DATE('2025-12-01', 'YYYY-MM-DD'),
+        p_fecha_fin => TO_DATE('2025-12-10', 'YYYY-MM-DD'),
+        p_estado => 'Activo',
+        p_pozo_premios => 0,
+        p_juego => 1,  -- ID de juego Poker
+        p_jugadores => 0,
+        p_valor_entrada => 100000
+    );
+END;
+/
+
+-- 5. Registro de participantes en el torneo
+BEGIN
+    PCK_CAJERO.registrar_participante(6, 21, 'Inscrito');  -- Carlos Gaitan en el Torneo de Poker
+    PCK_CAJERO.registrar_participante(6, 22, 'Inscrito');  -- Juan Sanchez en el Torneo de Poker
+END;
+/
+
+-- 6. Comprobación de estado de torneo antes de inscripción (debe estar 'Activo')
+BEGIN
+    -- Este trigger asegurará que solo los torneos activos permitan inscripciones
+    -- Si el torneo no está activo, se genera un error
+    PCK_DEALER.registrar_apuesta(100000, 21, 5);  -- Carlos Gaitan hace una apuesta
+END;
+/
+
+-- 7. Finalización del torneo (El ganador es asignado al finalizar el torneo)
+BEGIN
+    -- Supongamos que al final del torneo, Carlos Gaitan es el ganador
+    PCK_USUARIO.actualizar_ganadores(6, 21, '1er Lugar - $1000', 1000);  -- Carlos gana el 1er lugar
+END;
+/
+
+-- 8. Cierre del torneo
+BEGIN
+    PCK_ADM_SISTEMA.cerrar_torneo(6);  -- Cerrar el torneo de poker
+END;
+/
+--Carlos Gaitan gana un premio de $1000000 de pesos
+-- 9. Asignación de premio al ganador
+BEGIN
+    PCK_ADM_SISTEMA.actualizar_ganadores(6, 21, '1er Lugar - $1000000', 1000000);  -- Asignar el premio a Carlos
+END;
+/
+
+-- 10. Ahora, Carlos Gaitan va a la caja a entregar el cheque por su premio
+-- El sistema registra el cheque y suma el valor del premio a su balance
+BEGIN
+    PCK_CAJERO.registrar_cambio_fichas(1000, 69, 31, 'Cheque');  -- Carlos entrega el cheque para su premio
+END;
+/
+
+
+--Los amigos quieren verificar sus balances para ver si se efectuo el cambio
+-- 11. Verificación final de balances de los jugadores
+VAR c_resultado REFCURSOR;
+EXEC :c_resultado := PCK_CAJERO.consultar_saldo_usuario(21);  -- Balance de Carlos Gaitan
+PRINT c_resultado;
+
+EXEC :c_resultado := PCK_CAJERO.consultar_saldo_usuario(22);  -- Balance de Juan Sanchez
+PRINT c_resultado;
 
 
 

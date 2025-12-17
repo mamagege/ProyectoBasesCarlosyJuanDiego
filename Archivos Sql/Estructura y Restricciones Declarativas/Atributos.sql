@@ -13,7 +13,7 @@ ALTER TABLE MESAS ADD CONSTRAINT ck_TestadoMesa
 CHECK (estado IN ('Abierta','Cerrada','En mantenimiento'));
 
 ALTER TABLE CambioFichas ADD CONSTRAINT ck_TrecibeDinero
-CHECK (cajaRecibe IN ('Dinero','Fichas'));
+CHECK (cajaRecibe IN ('Dinero','Fichas', 'Cheque'));
 
 ALTER TABLE EMPLEADOS ADD CONSTRAINT ck_Tturno
 CHECK (turno IN ('Manana','Tarde','Noche'));
