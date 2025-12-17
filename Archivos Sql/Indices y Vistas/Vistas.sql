@@ -103,6 +103,62 @@ FROM Usuarios u;
 
 -- CICLO 2
 
+--7. Vista sobre torneos activos y sus detalles
+
+CREATE OR REPLACE VIEW V_Torneos_Activos AS
+SELECT 
+    t.id AS torneo_id,
+    t.nombre AS torneo_nombre,
+    t.fecha_inicio,
+    t.fecha_fin,
+    t.estado,
+    t.pozoDePremios,
+    t.valorEntrada,
+    t.jugadoresActuales
+FROM 
+    Torneos t
+WHERE 
+    t.estado = 'Activo';
+
+--8. Vista de participantes por torneo
+
+CREATE OR REPLACE VIEW V_Participantes_Torneo AS
+SELECT 
+    p.id AS participante_id,
+    p.torneo AS torneo_id,
+    u.nombre AS usuario_nombre,
+    u.id AS usuario_id,
+    p.estado AS estado_participante,
+    p.fecha_registro
+FROM 
+    Participantes p
+JOIN 
+    Usuarios u ON p.usuario = u.id
+ORDER BY 
+    p.torneo, p.fecha_registro;
+
+--9 Vista de los premios asignados en torneos
+
+CREATE OR REPLACE VIEW V_Premios_Asignados AS
+SELECT 
+    pr.id AS premio_id,
+    pr.premio AS descripcion_premio,
+    pr.monto AS monto_premio,
+    pr.estado AS estado_premio,
+    t.nombre AS torneo_nombre,
+    u.nombre AS participante_nombre
+FROM 
+    Premios pr
+JOIN 
+    Participantes p ON pr.participante = p.id
+JOIN 
+    Usuarios u ON p.usuario = u.id
+JOIN 
+    Torneos t ON pr.torneo = t.id
+WHERE 
+    pr.estado = 'Asignado';
+
+
 
 
 

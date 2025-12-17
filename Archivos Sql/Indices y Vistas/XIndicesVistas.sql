@@ -29,5 +29,10 @@ DROP VIEW V_Usuario_ResumenFinanciero;
 
 --CICLO 2
 
+DROP VIEW V_Torneos_Detalle;
+DROP VIEW V_Premios_Asignados;
+DROP VIEW V_Participantes_Torneo;
+
+
 
 

@@ -10,5 +10,6 @@ DROP TRIGGER  trg_evitar_beneficios_invitados;
 
 DROP TRIGGER trg_actualizar_participantesYPozo;
 DROP TRIGGER trg_comprobar_estado_torneo;
+DROP TRIGGER trg_actualizar_estado_torneo;
 
 

@@ -154,7 +154,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_valor_entrada IN Torneos.valorEntrada%TYPE 
     ) AS 
     BEGIN 
-        PCK.PCK_REGISTRAR_ESTABLECIMIENTO.crear_torneo(
+        PCK_REGISTRAR_ESTABLECIMIENTO.crear_torneo(
             p_nombre,
             p_fecha_inicio,
             p_fecha_fin,
@@ -179,7 +179,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_ADM_SISTEMA AS
         p_valor_entrada IN Torneos.valorEntrada%TYPE DEFAULT NULL
     ) AS 
     BEGIN 
-        PCK.MANTENER_ESTABLECIMIENTO.actualizar_torneo(
+        PCK_MANTENER_ESTABLECIMIENTO.actualizar_torneo(
             p_id,
             p_nombre,
             p_fecha_inicio,
@@ -242,7 +242,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
     ) AS
     BEGIN
         -- Se asume un balance inicial de 0
-        PCK_MANTENER_USUARIOS.crear_usuario_invitado(p_nombre, 0);
+        PCK_REGISTRAR_USUARIOS.crear_usuario_invitado(p_nombre, 0);
     END registrar_nuevo_invitado;
 
     -- Registrar transacción de fichas (Compra/Venta)
@@ -293,7 +293,7 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
         p_estado         IN VARCHAR2    -- Estado (Inscrito, Eliminado)
     ) AS 
     BEGIN
-        PCK_MANTENER_USUARIOS.registrar_participante(p_torneo_id, p_usuario_id, p_estado);
+        PCK_REGISTRAR_USUARIOS.registrar_participante(p_torneo_id, p_usuario_id, p_estado);
     END registrar_participante;
 
     -- Procedimiento para actualizar la participación de un jugador
@@ -314,9 +314,25 @@ CREATE OR REPLACE PACKAGE BODY PCK_CAJERO AS
     ) AS 
     BEGIN
         PCK_MANTENER_USUARIOS.actualizar_ganadores(p_torneo_id, p_participante_id, p_premio, p_monto);
-    END actualizar_ganadores
-    
-    ;
+    END actualizar_ganadores;
+
+
+    PROCEDURE eliminar_usuario(p_id IN Usuarios.id%TYPE) AS
+    BEGIN
+        PCK_MANTENER_USUARIOS.eliminar_usuario(p_id);
+    END eliminar_usuario;
+
+    PROCEDURE actualizar_datos_usuario_frecuente(
+        p_id IN UsuariosFrecuentes.id%TYPE,
+        p_nombre_nuevo IN Usuarios.nombre%TYPE DEFAULT NULL,
+        p_correo_nuevo IN UsuariosFrecuentes.correo%TYPE DEFAULT NULL,
+        p_celular_nuevo IN UsuariosFrecuentes.celular%TYPE DEFAULT NULL
+    ) AS
+    BEGIN
+        PCK_MANTENER_USUARIOS.actualizar_datos_usuario_frecuente(
+            p_id, p_nombre_nuevo, p_correo_nuevo, p_celular_nuevo
+        );
+    END actualizar_datos_usuario_frecuente;
 END PCK_CAJERO;
 /
 

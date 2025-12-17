@@ -144,3 +144,16 @@ CREATE TABLE Participantes (
     fecha_registro DATE DEFAULT SYSDATE,
     estado VARCHAR2(20) NOT NULL  -- Inscrito, Eliminado
 );
+
+CREATE TABLE Usuarios_Premios (
+    id NUMBER(10)
+        GENERATED ALWAYS AS IDENTITY
+        START WITH 1
+        INCREMENT BY 1,   
+    usuario NUMBER(10) NOT NULL,
+    premio NUMBER(10) NOT NULL,
+    fechaEntrega DATE NOT NULL,
+    puesto NUMBER(1) NOT NULL
+);
+
+

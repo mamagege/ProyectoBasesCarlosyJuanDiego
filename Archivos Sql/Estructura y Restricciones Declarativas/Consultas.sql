@@ -48,3 +48,23 @@ GROUP BY Dealers.id, Empleados.nombre;
 
 --Consultas con torneos y premios
 
+--¿Cuáles son los torneos que dan mayor cantidad de premios?
+
+
+SELECT t.nombre AS torneo_nombre, COUNT(p.id) AS cantidad_premios
+FROM Torneos t
+JOIN Premios p ON t.id = p.torneo
+GROUP BY t.id, t.nombre
+ORDER BY cantidad_premios DESC;
+
+--¿Cuales son los participantes que han ganado más premios?
+
+SELECT u.nombre AS participante_nombre, COUNT(up.premio) AS cantidad_premios
+FROM Usuarios u
+JOIN Usuarios_Premios up ON u.id = up.usuario
+WHERE up.puesto = 1  -- Asumiendo que el puesto 1 es el ganador
+GROUP BY u.id, u.nombre
+ORDER BY cantidad_premios DESC;
+
+
+

@@ -61,3 +61,10 @@ ON DELETE CASCADE;
 
 ALTER TABLE Participantes ADD CONSTRAINT FK_Participantes_Usuario 
 FOREIGN KEY (usuario) REFERENCES Usuarios(id);
+
+ALTER TABLE Usuarios_Premios ADD CONSTRAINT FK_UP_Participante
+FOREIGN KEY (usuario) REFERENCES Usuarios(id);
+
+ALTER TABLE Usuarios_Premios ADD CONSTRAINT FK_UP_Premio
+FOREIGN KEY (premio) REFERENCES Premios(id);
+

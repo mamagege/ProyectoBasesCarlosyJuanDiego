@@ -53,3 +53,10 @@ ON Participantes(torneo);
 -- Índice para consultar participantes por usuario
 CREATE INDEX idx_participantes_usuario 
 ON Participantes(usuario);
+
+CREATE INDEX idx_Usuarios_Premios_usuario
+ON Usuarios_Premios(usuario);
+
+CREATE INDEX idx_Usuarios_Premios_premio
+ON Usuarios_Premios(premio);    
+

@@ -124,3 +124,49 @@ INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (
 --CICLO 2
 
 
+-- Insertamos un torneo
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Poker', TO_DATE('2025-12-01', 'YYYY-MM-DD'), TO_DATE('2025-12-10', 'YYYY-MM-DD'), 'Activo', 0, 1, 0, 100);
+
+-- Insertamos otro torneo para probar la funcionalidad
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Blackjack', TO_DATE('2025-12-05', 'YYYY-MM-DD'), TO_DATE('2025-12-15', 'YYYY-MM-DD'), 'Activo', 0, 2, 0, 200);
+
+--El disparador trg_actualizar_participantesYPozo se activará automáticamente cuando se registre un participante en estos torneos
+
+
+-- Insertamos participantes en el Torneo de Poker
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
+VALUES (1, 10, SYSDATE, 'Inscrito');  -- Torneo de Poker, Usuario 10
+
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
+VALUES (1, 15, SYSDATE, 'Inscrito');  -- Torneo de Poker, Usuario 15
+
+-- Insertamos participantes en el Torneo de Blackjack
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
+VALUES (2, 20, SYSDATE, 'Inscrito');  -- Torneo de Blackjack, Usuario 20
+
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
+VALUES (2, 25, SYSDATE, 'Inscrito');  -- Torneo de Blackjack, Usuario 25
+
+--El disparador trg_actualizar_participantesYPozo se activará automáticamente para cada registro de participante
+
+
+-- Insertamos premios para el Torneo de Poker
+INSERT INTO Premios (torneo, participante, premio, monto, estado)
+VALUES (1, 10, '1er Lugar - $1000', 1000, 'Asignado');  -- Torneo de Poker, Usuario 10 (Ganador)
+
+INSERT INTO Premios (torneo, participante, premio, monto, estado)
+VALUES (1, 15, '2do Lugar - $500', 500, 'Asignado');  -- Torneo de Poker, Usuario 15 (2do Lugar)
+
+-- Insertamos premios para el Torneo de Blackjack
+INSERT INTO Premios (torneo, participante, premio, monto, estado)
+VALUES (2, 20, '1er Lugar - $1500', 1500, 'Asignado');  -- Torneo de Blackjack, Usuario 20 (Ganador)
+
+INSERT INTO Premios (torneo, participante, premio, monto, estado)
+VALUES (2, 25, '2do Lugar - $750', 750, 'Asignado');  -- Torneo de Blackjack, Usuario 25 (2do Lugar)
+
+--Finalmente el disparador trg_actualizar_estado_torneo se activará automáticamente para actualizar el estado del torneo si todos los premios han sido asignados.
+
+
+

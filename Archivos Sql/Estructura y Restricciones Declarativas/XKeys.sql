@@ -86,6 +86,12 @@ ALTER TABLE Premios DROP CONSTRAINT ck_TestadoPremio;
 -- --- TABLA: Mesas (Ciclo 2)
 
 ALTER TABLE Mesas DROP CONSTRAINT FK_Mesas_Torneos;
+
+ALTER TABLE Usuarios_Premios DROP CONSTRAINT FK_UP_Premio;
+ALTER TABLE Usuarios_Premios DROP CONSTRAINT FK_UP_Usuario; 
+ALTER TABLE Usuarios_Premios DROP CONSTRAINT PK_Usuarios_Premios;
+ALTER TABLE Usuarios_Premios DROP CONSTRAINT ck_puestoUsuario;
+ALTER TABLE Usuarios_Premios DROP CONSTRAINT UQ_puesto;
 -- ============================================================
 
 

@@ -208,75 +208,92 @@ VALUES (30000, TO_DATE('2025-10-28 21:30', 'YYYY-MM-DD HH24:MI'), 'Ganada', 8, 8
 -- 13. Torneos
 -- ============================================================
 
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo A', TO_DATE('2025-12-01', 'YYYY-MM-DD'), TO_DATE('2025-12-15', 'YYYY-MM-DD'), 'Activo', 1000000, 1);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo B', TO_DATE('2025-12-10', 'YYYY-MM-DD'), TO_DATE('2025-12-20', 'YYYY-MM-DD'), 'Activo', 500000, 2);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo C', TO_DATE('2025-12-05', 'YYYY-MM-DD'), TO_DATE('2025-12-10', 'YYYY-MM-DD'), 'Finalizado', 750000, 3);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo D', TO_DATE('2025-12-12', 'YYYY-MM-DD'), TO_DATE('2025-12-22', 'YYYY-MM-DD'), 'Activo', 1500000, 4);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo E', TO_DATE('2025-12-15', 'YYYY-MM-DD'), TO_DATE('2025-12-25', 'YYYY-MM-DD'), 'Activo', 2000000, 5);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo F', TO_DATE('2025-12-20', 'YYYY-MM-DD'), TO_DATE('2025-12-30', 'YYYY-MM-DD'), 'Activo', 2500000, 6);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo G', TO_DATE('2025-12-01', 'YYYY-MM-DD'), TO_DATE('2025-12-10', 'YYYY-MM-DD'), 'Cancelado', 1000000, 7);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo H', TO_DATE('2025-12-03', 'YYYY-MM-DD'), TO_DATE('2025-12-15', 'YYYY-MM-DD'), 'Activo', 3000000, 8);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo I', TO_DATE('2025-12-07', 'YYYY-MM-DD'), TO_DATE('2025-12-18', 'YYYY-MM-DD'), 'Activo', 1200000, 9);
-INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego)
-VALUES ('Torneo J', TO_DATE('2025-12-10', 'YYYY-MM-DD'), TO_DATE('2025-12-20', 'YYYY-MM-DD'), 'Activo', 1800000, 10);
+-- Insertar 5 torneos
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Poker', TO_DATE('2025-12-01', 'YYYY-MM-DD'), TO_DATE('2025-12-10', 'YYYY-MM-DD'), 'Activo', 0, 1, 0, 100);
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Blackjack', TO_DATE('2025-12-05', 'YYYY-MM-DD'), TO_DATE('2025-12-15', 'YYYY-MM-DD'), 'Activo', 0, 2, 0, 200);
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Ruleta', TO_DATE('2025-12-10', 'YYYY-MM-DD'), TO_DATE('2025-12-20', 'YYYY-MM-DD'), 'Activo', 0, 3, 0, 150);
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Baccarat', TO_DATE('2025-12-15', 'YYYY-MM-DD'), TO_DATE('2025-12-25', 'YYYY-MM-DD'), 'Activo', 0, 4, 0, 250);
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Dados', TO_DATE('2025-12-20', 'YYYY-MM-DD'), TO_DATE('2025-12-30', 'YYYY-MM-DD'), 'Activo', 0, 5, 0, 300);
 
 -- ============================================================
 -- 14. Participantes
 -- ============================================================
--- Participantes en el torneo 1
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (1, 1, TO_DATE('2025-12-01', 'YYYY-MM-DD'), 'Inscrito');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (1, 2, TO_DATE('2025-12-02', 'YYYY-MM-DD'), 'Inscrito');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (1, 3, TO_DATE('2025-12-03', 'YYYY-MM-DD'), 'Inscrito');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (1, 4, TO_DATE('2025-12-04', 'YYYY-MM-DD'), 'Inscrito');
--- Participantes en el torneo 2
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (2, 5, TO_DATE('2025-12-05', 'YYYY-MM-DD'), 'Eliminado');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (2, 6, TO_DATE('2025-12-06', 'YYYY-MM-DD'), 'Eliminado');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (2, 7, TO_DATE('2025-12-07', 'YYYY-MM-DD'), 'Inscrito');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (2, 8, TO_DATE('2025-12-08', 'YYYY-MM-DD'), 'Inscrito');
--- Participantes en el torneo 3
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (3, 9, TO_DATE('2025-12-09', 'YYYY-MM-DD'), 'Inscrito');
-INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
-VALUES (3, 10, TO_DATE('2025-12-10', 'YYYY-MM-DD'), 'Inscrito');
+
+-- Insertar 5 participantes en cada torneo
+-- Participantes para el Torneo de Poker
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (11, 10, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (11, 15, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (11, 20, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (11, 25, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (11, 30, SYSDATE, 'Inscrito');
+
+-- Participantes para el Torneo de Blackjack
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (12, 35, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (12, 40, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (12, 45, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (12, 50, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (12, 55, SYSDATE, 'Inscrito');
+
+-- Participantes para el Torneo de Ruleta
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (13, 60, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (13, 65, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (13, 70, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (13, 75, SYSDATE, 'Inscrito');
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (13, 80, SYSDATE, 'Inscrito');
+
 
 
 -- ============================================================
 -- 15. Premios
 -- ============================================================
 
--- Premios para el torneo 1
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (1, 1, '1er Lugar: $100,000', 100000, 'Asignado');
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (1, 2, '2do Lugar: $50,000', 50000, 'Asignado');
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (1, 3, '3er Lugar: $25,000', 25000, 'Asignado');
--- Premios para el torneo 2
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (2, 4, '1er Lugar: $150,000', 150000, 'Asignado');
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (2, 5, '2do Lugar: $75,000', 75000, 'Asignado');
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (2, 6, '3er Lugar: $50,000', 50000, 'Asignado');
--- Premios para el torneo 3
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (3, 7, '1er Lugar: $200,000', 200000, 'Asignado');
-INSERT INTO Premios (torneo, participante, premio, monto, estado)
-VALUES (3, 8, '2do Lugar: $100,000', 100000, 'Asignado');
+-- Insertar 5 premios para el Torneo de Poker
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (1, 10, '1er Lugar - $1000', 1000, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (1, 15, '2do Lugar - $500', 500, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (1, 20, '3er Lugar - $300', 300, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (1, 25, '4to Lugar - $200', 200, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (1, 30, '5to Lugar - $100', 100, 'Asignado');
+
+-- Insertar 5 premios para el Torneo de Blackjack
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 35, '1er Lugar - $1500', 1500, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 40, '2do Lugar - $750', 750, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 45, '3er Lugar - $500', 500, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 50, '4to Lugar - $300', 300, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 55, '5to Lugar - $150', 150, 'Asignado');
+
+-- Insertar 5 premios para el Torneo de Ruleta
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (3, 60, '1er Lugar - $2000', 2000, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (3, 65, '2do Lugar - $1000', 1000, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (3, 70, '3er Lugar - $750', 750, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (3, 75, '4to Lugar - $500', 500, 'Asignado');
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (3, 80, '5to Lugar - $250', 250, 'Asignado');
+
+-- ============================================================
+-- 16. Usuarios_Premios 
+-- ============================================================
+
+-- Insertar 5 premios en la tabla de Usuarios_Premios para el Torneo de Poker
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (10, 1, SYSDATE, 1);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (15, 2, SYSDATE, 2);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (20, 3, SYSDATE, 3);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (25, 4, SYSDATE, 4);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (30, 5, SYSDATE, 5);
+
+-- Insertar 5 premios en la tabla de Usuarios_Premios para el Torneo de Blackjack
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (35, 6, SYSDATE, 1);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (40, 7, SYSDATE, 2);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (45, 8, SYSDATE, 3);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (50, 9, SYSDATE, 4);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (55, 10, SYSDATE, 5);
+
+-- Insertar 5 premios en la tabla de Usuarios_Premios para el Torneo de Ruleta
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (60, 11, SYSDATE, 1);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (65, 12, SYSDATE, 2);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (70, 13, SYSDATE, 3);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (75, 14, SYSDATE, 4);
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (80, 15, SYSDATE, 5);

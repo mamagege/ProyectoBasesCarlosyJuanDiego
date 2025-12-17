@@ -96,3 +96,21 @@ INSERT INTO UsuariosFrecuentes_Beneficios (beneficio, usuarioFrecuente) VALUES (
 
 -- CICLO 2 --
 
+
+-- Intentamos insertar un torneo con una fecha de fin anterior a la fecha de inicio
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Ruleta', TO_DATE('2025-12-01', 'YYYY-MM-DD'), TO_DATE('2025-11-30', 'YYYY-MM-DD'), 'Activo', 0, 1, 0, 100);
+
+-- Intentamos insertar un participante en un torneo no activo
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado)
+VALUES (1, 10, SYSDATE, 'Inscrito');  -- Torneo con ID 1 no está activo
+
+-- Intentamos insertar un premio en un torneo sin participantes
+INSERT INTO Premios (torneo, participante, premio, monto, estado)
+VALUES (1, 10, '1er Lugar - $1000', 1000, 'Asignado');  -- Torneo con ID 1 sin participantes
+
+-- Intentamos asignar un premio a un usuario que no tiene premios asignados
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto)
+VALUES (10, 1, SYSDATE, 1);  -- Usuario con ID 10 no tiene premios asignados
+
+

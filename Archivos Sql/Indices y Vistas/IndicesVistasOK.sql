@@ -45,6 +45,35 @@ ORDER BY total_transacciones DESC;
 --CICLO 2
 
 
+-- Consulta: Obtener todos los torneos activos
+-- Usa: idx_torneos_estado y Vista V_Torneos_Activos
+
+SELECT *
+FROM V_Torneos_Activos;
+
+-- Consulta: Obtener todos los participantes de un torneo
+-- Usa: idx_participantes_torneo y Vista V_Participantes_Torneo
+
+SELECT *
+FROM V_Participantes_Torneo
+WHERE torneo_id = 1;  -- Cambiar el ID del torneo según sea necesario
+
+-- Consulta: Obtener los premios asignados a los participantes de un torneo
+-- Usa: idx_Usuarios_Premios_usuario y Vista V_Premios_Asignados
+
+SELECT *
+FROM V_Premios_Asignados
+WHERE torneo_nombre = 'Torneo 1';  -- Cambiar el nombre del torneo según sea necesario
+
+-- Consulta: Obtener todos los premios asignados a un usuario específico
+-- Usa: idx_Usuarios_Premios_usuario y Vista V_Premios_Asignados
+
+SELECT *
+FROM V_Premios_Asignados
+WHERE participante_nombre = 'Juan Perez';  -- Cambiar el nombre del participante según sea necesario
+
+
+
 
 
 

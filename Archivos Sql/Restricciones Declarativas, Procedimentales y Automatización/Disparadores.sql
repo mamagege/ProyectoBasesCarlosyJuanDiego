@@ -180,7 +180,6 @@ BEGIN
     SET pozoDePremios = v_pozo_premios + (v_valor_entrada * 0.9)
     WHERE id = :NEW.torneo;
 
-    COMMIT;
 END;
 /
 
@@ -205,3 +204,15 @@ BEGIN
     END IF;
 END;
 /
+
+
+--Disparador para actualizar el estado del torneo a "Finalizado" cuando se asignen premios
+CREATE OR REPLACE TRIGGER trg_actualizar_estado_torneo
+AFTER INSERT ON Premios
+FOR EACH ROW
+BEGIN
+    UPDATE Torneos
+    SET estado = 'Finalizado'
+    WHERE id = :NEW.torneo;
+    COMMIT;
+END;

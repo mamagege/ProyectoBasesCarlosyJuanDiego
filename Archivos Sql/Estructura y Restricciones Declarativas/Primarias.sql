@@ -17,3 +17,4 @@ ALTER TABLE Apuestas ADD CONSTRAINT PK_Apuestas PRIMARY KEY (id);
 ALTER TABLE Premios ADD CONSTRAINT PK_Premios PRIMARY KEY (id);
 ALTER TABLE Torneos ADD CONSTRAINT PK_Torneos PRIMARY KEY (id);
 ALTER TABLE Participantes ADD CONSTRAINT PK_Participantes PRIMARY KEY (id);
+ALTER TABLE Usuarios_Premios ADD CONSTRAINT PK_Participantes_Premios PRIMARY KEY (usuario, premio);

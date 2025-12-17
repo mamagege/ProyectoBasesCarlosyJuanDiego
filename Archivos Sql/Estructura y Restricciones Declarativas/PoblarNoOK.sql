@@ -207,8 +207,82 @@ VALUES (100, 10000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Cancelada', 1, 1);
 INSERT INTO Apuestas (id, monto, fechaHora, estado, usuario, mesa)
 VALUES (101, 15000, TO_DATE('2025-10-25','YYYY-MM-DD'), 'Pausada', 1, 1);
 
+
+-- ============================================================
 --CICLO 2 POBLAR NO OK
 -- ============================================================
 
+-- Intentamos insertar torneos con fechas incorrectas y un estado no válido
 
+-- 1. Fecha de fin anterior a la fecha de inicio
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Poker', TO_DATE('2025-12-01', 'YYYY-MM-DD'), TO_DATE('2025-11-30', 'YYYY-MM-DD'), 'Activo', 0, 1, 0, 100);
 
+-- 2. Estado inválido para el torneo
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Blackjack', TO_DATE('2025-12-05', 'YYYY-MM-DD'), TO_DATE('2025-12-15', 'YYYY-MM-DD'), 'Completado', 0, 2, 0, 200);
+
+-- 3. Fecha de fin en el futuro que no concuerda con la fecha de inicio
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Ruleta', TO_DATE('2025-12-10', 'YYYY-MM-DD'), TO_DATE('2025-11-30', 'YYYY-MM-DD'), 'Activo', 0, 3, 0, 150);
+
+-- 4. Fecha de inicio posterior a la fecha de fin
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Baccarat', TO_DATE('2025-12-20', 'YYYY-MM-DD'), TO_DATE('2025-12-10', 'YYYY-MM-DD'), 'Activo', 0, 4, 0, 250);
+
+-- 5. Valor de entrada nulo
+INSERT INTO Torneos (nombre, fecha_inicio, fecha_fin, estado, pozoDePremios, juego, jugadoresActuales, valorEntrada)
+VALUES ('Torneo de Dados', TO_DATE('2025-12-25', 'YYYY-MM-DD'), TO_DATE('2025-12-30', 'YYYY-MM-DD'), 'Activo', 0, 5, 0, NULL);
+
+-- Intentamos insertar participantes en torneos no activos o usuarios inexistentes
+
+-- 1. Intentamos insertar un participante en un torneo que no está activo
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (1, 10, SYSDATE, 'Inscrito');  -- Torneo 1 no está activo
+
+-- 2. Intentamos insertar un participante en un torneo con fecha ya pasada
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (1, 15, SYSDATE, 'Inscrito');  -- Torneo 1 ya finalizado
+
+-- 3. Usuario que no existe en la tabla Usuarios
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (2, 999, SYSDATE, 'Inscrito');  -- Usuario 999 no existe
+
+-- 4. Estado inválido de un participante
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (2, 20, SYSDATE, 'Activo');  -- Estado 'Activo' no es válido
+
+-- 5. Intentamos insertar un participante cuando el torneo tiene jugadores ya completos
+INSERT INTO Participantes (torneo, usuario, fecha_registro, estado) VALUES (3, 25, SYSDATE, 'Inscrito');  -- No cabe más gente
+
+-- Intentamos insertar premios cuando no hay participantes o con valores no válidos
+
+-- 1. Intentamos asignar premios en un torneo sin participantes
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (1, 10, '1er Lugar - $1000', 1000, 'Asignado');  -- Torneo sin participantes
+
+-- 2. Intentamos asignar un premio a un participante que no existe
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 999, '1er Lugar - $1500', 1500, 'Asignado');  -- Participante no existe
+
+-- 3. Monto nulo para el premio
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (2, 20, '2do Lugar - $500', NULL, 'Asignado');  -- Monto no puede ser NULL
+
+-- 4. Estado inválido de un premio
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (3, 25, '3er Lugar - $300', 300, 'Pendiente');  -- Estado 'Pendiente' no es válido
+
+-- 5. Intentamos asignar un premio a un torneo que ya está cerrado
+INSERT INTO Premios (torneo, participante, premio, monto, estado) VALUES (4, 30, '4to Lugar - $200', 200, 'Asignado');  -- Torneo cerrado
+
+-- Intentamos asignar premios a usuarios no existentes o con datos incorrectos
+
+-- 1. Intentamos asignar un premio a un usuario que no existe
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (999, 1, SYSDATE, 1);  -- Usuario no existe
+
+-- 2. Intentamos asignar un premio no registrado
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (10, 999, SYSDATE, 1);  -- Premio no existe
+
+-- 3. Intentamos asignar un puesto inválido
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (15, 2, SYSDATE, 20);  -- Puesto fuera de rango
+
+-- 4. Intentamos asignar premios sin fecha de entrega
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (20, 3, NULL, 2);  -- FechaEntrega no puede ser NULL
+
+-- 5. Intentamos asignar un premio a un participante no premiado
+INSERT INTO Usuarios_Premios (usuario, premio, fechaEntrega, puesto) VALUES (25, 4, SYSDATE, 4);  -- Participante no tiene premio
+
+-- ================================================

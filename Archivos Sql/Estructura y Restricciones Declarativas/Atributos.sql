@@ -28,3 +28,9 @@ CHECK (estado IN ('Asignado', 'Entregado'));
 
 ALTER TABLE Torneos ADD CONSTRAINT ck_FechaTorneo
 CHECK (fecha_inicio < fecha_fin);
+
+ALTER TABLE Participantes ADD CONSTRAINT ck_TestadoParticipante
+CHECK (estado IN ('Inscrito', 'Eliminado', 'Ganador'));
+
+ALTER TABLE Usuarios_Premios ADD CONSTRAINT ck_puestoUsuario
+CHECK (puesto IN (1,2,3,4,5,6,7,8,9,10));
